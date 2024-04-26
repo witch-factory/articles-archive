@@ -1,45 +1,37 @@
 ---
-slug: articles-memo-deep
-title: 깊은 탐구를 위한 글들
-description: 아무도 모르는 깊은 곳을 탐구하는 글들
+slug: articles-memo-deep-study
+title: 다양한 부분의 깊은 동작을 다룬 글들
+description: 아무도 모르는 깊은 곳까지
 ---
 
 Level 0 DOM(history of DOM)
 
 https://www.quirksmode.org/js/dom0.html#history
 
-value representation in javascript implementations
+ES modules: 만화로 보는 심층 탐구
 
-https://wingolog.org/archives/2011/05/18/value-representation-in-javascript-implementations
+https://ui.toast.com/weekly-pick/ko_20180402
 
-Crafting Interpreters - Optimization
+The History of DOM Manipulation Performance in a Nutshell
 
-https://craftinginterpreters.com/optimization.html#nan-boxing
+https://betterprogramming.pub/the-history-of-dom-manipulation-performance-in-a-nutshell-701247c19e83
 
-JavaScript engine internals: NaN-boxing
+A Few DOM Reminders
 
-https://brionv.com/log/2018/05/17/javascript-engine-internals-nan-boxing/
+https://eisenbergeffect.medium.com/a-few-dom-reminders-2a0f18e40804
 
-Firefox 4 Performance
+The Saga of the Closure Compiler, and Why TypeScript Won
 
-https://hacks.mozilla.org/2011/03/firefox4-performance/
+https://effectivetypescript.com/2023/09/27/closure-compiler/
 
-What Are JavaScript Variables Made Of
+(번역) 컴파일러 이론과 반응성
 
-https://www.zhenghao.io/posts/javascript-variables
+https://junghan92.medium.com/%EB%B2%88%EC%97%AD-%EC%BB%B4%ED%8C%8C%EC%9D%BC%EB%9F%AC-%EC%9D%B4%EB%A1%A0%EA%B3%BC-%EB%B0%98%EC%9D%91%EC%84%B1-80619ec256ff
 
-JavaScript Memory Model Demystified
+검증하지 말고 파싱하라
 
-https://www.zhenghao.io/posts/javascript-memory
+https://eatchangmyeong.github.io/2022/12/04/parse-don-t-validate.html
 
-What is the purpose of NaN boxing?
+Every type is defined by its intro and elim forms
 
-https://softwareengineering.stackexchange.com/questions/185406/what-is-the-purpose-of-nan-boxing/185431#185431
-
-SpiderMonkey의 jsvalue 코드
-
-https://searchfox.org/mozilla-central/source/js/public/Value.h#532
-
-v8 소스코드 일부
-
-https://v8docs.nodesource.com/node-0.12/d4/da0/v8_8h_source.html#l05646
+https://blog.jez.io/intro-elim/

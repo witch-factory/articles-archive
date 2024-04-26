@@ -23,3 +23,67 @@ https://news.ycombinator.com/item?id=31092912
 JavaScript 개발자를 위한 Golang - 1부(번역)
 
 https://lannex.github.io/blog/2019/Golang-for-JavaScript-developers-1/
+
+hangman game example
+
+https://www.frontendmentor.io/challenges/hangman-game-rsQiSVLGWn
+
+브라우저 렌더링 과정 이해하기
+
+https://tecoble.techcourse.co.kr/post/2021-10-24-browser-rendering/
+
+백엔드가 이정도는 해줘야 함 - 커리큘럼 털어놓기
+
+https://velog.io/@city7310/%EB%B0%B1%EC%97%94%EB%93%9C%EA%B0%80-%EC%9D%B4%EC%A0%95%EB%8F%84%EB%8A%94-%ED%95%B4%EC%A4%98%EC%95%BC-%ED%95%A8-%EC%BB%A4%EB%A6%AC%ED%81%98%EB%9F%BC-%ED%84%B8%EC%96%B4%EB%86%93%EA%B8%B0
+
+예상보다 24배 많은 콘텐츠에 프론트가 대처하는 방법
+
+https://ridicorp.com/story/ridi-markdown-improvements/
+
+카카오페이지는 BFF(Backend For Frontend)를 어떻게 적용했을까?
+
+https://fe-developers.kakaoent.com/2022/220310-kakaopage-bff/
+
+멀티스레딩 기술의 이해
+
+https://udteam.tistory.com/213
+
+코어 웹 바이탈(Core web Vitals)이란 무엇인가?
+
+https://www.ascentkorea.com/core-web-vitals/
+
+Code generator 개발기 (Part 1)
+
+https://tech.inflab.com/20230613-code-generator-part-1/
+
+AWS Lambda@Edge에서 실시간 이미지 리사이즈 & WebP 형식으로 변환
+
+https://medium.com/daangn/lambda-edge%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EB%8A%94-on-the-fly-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%A6%AC%EC%82%AC%EC%9D%B4%EC%A7%95-f4e5052d49f3
+
+Web Components are Dead: Long Live Web Components
+
+https://blog.bitsrc.io/web-components-are-dead-long-live-web-components-1de76ab4890d
+
+9가지 프로그래밍 언어로 배우는 개념: 1편 - 타입 이론
+
+https://tech.devsisters.com/posts/programming-languages-1-type-theory/
+
+Single-page application: how SPA works and how it differs from MPA | KISS digital
+
+https://kissdigital.com/blog/single-page-application-how-spa-works-and-how-it-differs-from-mpa
+
+React as a UI Runtime — overreacted
+
+https://overreacted.io/react-as-a-ui-runtime/
+
+Why is SSR gaining so much popularity in 2022?
+
+https://www.reddit.com/r/reactjs/comments/s2vwvr/why_is_ssr_gaining_so_much_popularity_in_2022/
+
+코어 웹 바이탈이 SEO에 미치는 영향
+
+https://ktseo41.github.io/blog/log/how-core-web-vital-affect-seo.html
+
+What's the difference between ISO 8601 and RFC 3339 Date Formats?
+
+https://stackoverflow.com/questions/522251/whats-the-difference-between-iso-8601-and-rfc-3339-date-formats
