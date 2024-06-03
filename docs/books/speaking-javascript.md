@@ -1,7 +1,6 @@
 ---
-id: speaking-javascript
+slug: speaking-javascript
 title: 자바스크립트를 말하다
-tags: [javascript]
 description: 악셀 라우슈마이어의 책 "자바스크립트를 말하다"
 ---
 
@@ -91,7 +90,7 @@ for(var i = 0; i < 5; i++){
 console.log(result[0]()); // 5
 ```
 
-각 `result[i]`에서 반환되는 함수는 함수를 생성했을 당시 i값이 아니라 외부 변수 i를 참조한다. result는 이런 느낌의 내용이 되고, 루프가 끝난 시점에 외부변수 i는 5가 된다. 그래서 result[0]()을 호출하면 5가 반환된다.
+각 `result[i]`에서 반환되는 함수는 함수를 생성했을 당시 i값이 아니라 외부 변수 i를 참조한다. result는 이런 느낌의 내용이 되고, 루프가 끝난 시점에 외부변수 i는 5가 된다. 그래서 `result[0]()`을 호출하면 5가 반환된다.
 
 ```javascript
 result = [
