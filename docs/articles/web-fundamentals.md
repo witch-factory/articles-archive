@@ -1,5 +1,5 @@
 ---
-slug: articles-memo-web
+slug: articles-memo-web-fundamentals
 title: 웹의 기초에 관한 글들
 description: 웹과 브라우저 근본에 관한 글들을 저장
 ---
