@@ -41,13 +41,6 @@ const config: Config = {
           editUrl:
             "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        },
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -82,9 +75,14 @@ const config: Config = {
           position: "left",
           label: "Translations",
         },
-        { to: "/blog", label: "Blog", position: "left" },
         {
-          href: "https://github.com/facebook/docusaurus",
+          type: "docSidebar",
+          sidebarId: "bookSidebar",
+          position: "left",
+          label: "Books",
+        },
+        {
+          href: "https://github.com/witch-factory",
           label: "GitHub",
           position: "right",
         },
@@ -103,6 +101,10 @@ const config: Config = {
             {
               label: "Translations",
               to: "/docs/translations",
+            },
+            {
+              label: "Books",
+              to: "/docs/books",
             },
             {
               label: "주인장",
