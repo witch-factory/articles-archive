@@ -45,7 +45,29 @@ Number(null); // 0
 
 그래서 undefined가 만들어졌다. 이는 null과 다르게 객체 참조가 아닌 값이다. 또한 숫자로 변환하면 NaN이 된다.
 
+### undefined 덮어쓰기 방지
 
+ES3까지 undefined는 전역 객체 프로퍼티, 전역 변수였다. 따라서 이때까지는 undefined를 다른 값으로 덮어쓰지 않도록 주의해야 했는데 이렇게 덮어쓰는 걸 막는 테크닉 2가지가 있었다.
+
+1. undefined 가리기
+
+```javascript
+(function (undefined){
+  // 즉시 실행 함수 호출시 "undefined"라는 이름의 매개변수를 제공하지 않았으므로
+  // 이 매개변수의 값은 무조건 진짜 undefined가 된다.
+  console.log(undefined); // undefined
+})();
+```
+
+2. void 연산자
+
+void 연산자는 피연산자를 평가하고 undefined(덮어써질 수 있는 전역 변수 undefined가 아니라 진짜 undefined 값)를 반환한다. 이를 이용해 undefined를 덮어쓰는 것을 막을 수 있다.
+
+```javascript
+if (x === void 0){
+  // x가 undefined일 때 실행
+}
+```
 
 ## arguments
 
@@ -441,5 +463,93 @@ eval은 쓰면 안되기는 하지만 엄격 모드에서 좀 낫다. 엄격 모
 
 `with`가 금지되었다. 그리고 원래는 0으로 시작하는 정수 리터럴이 8진수로 해석됐지만 엄격 모드에서는 이런 8진수 리터럴을 쓰면 에러가 발생한다.
 
-# 8. 값
+## 원시값의 래퍼 객체
+
+불리언, 숫자, 문자열에 대응하는 Boolean, Number, String이 있다. 이들은 생성자로 사용할 수도 있지만 일반 함수로 사용될 경우 대응하는 원시 타입으로 변환하는 역할을 한다.
+
+```js
+String(123); // '123'
+Number('123'); // 123
+```
+
+단 래퍼 객체는 말 그대로 객체이며 원시값과 달리 참조로 비교된다. 또한 원시값은 immutable이라는 걸 제외하면 원시값으로 할 수 없는 일은 래퍼 객체로도 할 수 없기 때문에 래퍼 객체를 쓸 일은 거의 없다.
+
+래퍼 생성자를 써서 원시값을 객체화할 수 있는데 이를 되돌리려면 `valueOf` 메서드를 쓰면 된다.
+
+```js
+var str = new String('foo');
+str.valueOf(); // 'foo'
+```
+
+래퍼 객체 생성자를 이용할 시 숫자, 문자열은 제대로 추출되지만 불리언은 그렇지 않다.
+
+```js
+Number(new Number(123)); // 123
+String(new String('foo')); // 'foo'
+Boolean(new Boolean(false)); // true. 래퍼 객체는 객체이기에 true로 평가된다.
+```
+
+### 스트릭트 모드와 래퍼 객체
+
+원시값의 메서드는 래퍼 객체에서 빌려온다는 건 유명하다. 그런데 이는 엄격 모드와 일반적인 경우 차이가 있다.
+
+일반 모드에서는 원시값의 메서드를 처리할 때 즉석에서 래퍼객체로 변환해서 처리한다. 반면 엄격 모드에서는 원시값의 프로토타입 메서드를 투명하게 처리한다. 즉 메서드만 빌려오고 래퍼 객체로 변환하지 않는다.
+
+```js
+// 엄격 모드가 아닐 때
+String.prototype.sloppy=function(){
+  console.log(typeof this);
+  console.log(this instanceof String);
+};
+'' .sloppy(); // object, true
+
+// 엄격 모드일 때
+String.prototype.strict=function(){
+  'use strict';
+  console.log(typeof this);
+  console.log(this instanceof String);
+};
+''.strict(); // string, false
+```
+
+## Object 생성자
+
+Object 생성자는 임의의 값을 객체로 바꿀 때 사용할 수도 있다. 객체는 그 자신으로, undefined와 null은 빈 객체로 바뀌고 원시값은 래퍼 객체로 바뀐다.
+
+일반적으로 이 Object도 Number등 원시값 래퍼 객체와 비슷하게, 생성자로 쓰는 일은 거의 없다.
+
+```js
+var obj={a:1, b:2};
+Object(obj)===obj; // true
+Object(undefined); // {}
+Object(null); // {}
+Object(1); // Number {1}
+```
+
+## ToPrimitive
+
+`ToPrimitive`는 값을 원시 값으로 변환하는, 명세에서 정의된 내부 함수다. JS 자체적으로는 접근할 수 없고 동작을 정의한 것이다.
+
+```js
+// preferredType은 Number나 String이다.
+ToPrimitive(input, [preferredType]);
+```
+
+이 함수 동작은 명세에서 확인할 수 있다. `+`, `==`, `>` 등 연산자를 쓸 때 원시값으로의 변환을 위해 이 함수가 호출된다.
+
+## sort
+
+`Array.prototype.sort`는 배열을 정렬한다. 그런데 이 함수는 기본적으로 문자열로 변환한 후 유니코드 코드 포인트 순서로 정렬한다. 따라서 숫자를 크기순으로 정렬할 때 등 일반적인 경우에는 제대로 동작하지 않는다. 콜백을 따로 넘겨주어야 한다.
+
+```js
+var arr = [1, 10, 2, 20];
+arr.sort(); // [1, 10, 2, 20]
+arr.sort(function(a, b){
+  return a - b;
+}); // [1, 2, 10, 20]
+```
+
+## NaN과 불일치
+
+`NaN`은 자기 자신과도 불일치한다. 이는 `===` 연산자로 비교할 때 `false`가 나오는 것이다. 이는 `NaN`이 `NaN`과 같지 않다는 것을 의미한다. `NaN`인지 체크하기 위해서는 특수한 `isNaN` 함수를 써야 한다.
 
