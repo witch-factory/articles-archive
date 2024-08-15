@@ -174,3 +174,7 @@ https://cacm.acm.org/research/javascript-language-design-and-implementation-in-t
 Array.isArray(), 배열인지 확인하는 것에 대하여
 
 https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+
+Yalc: npm 패키지를 테스트하는 더 나은 방법
+
+https://medium.com/zigbang/yalc-npm-%ED%8C%A8%ED%82%A4%EC%A7%80%EB%A5%BC-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EB%8A%94-%EB%8D%94-%EB%82%98%EC%9D%80-%EB%B0%A9%EB%B2%95-26eebae3f355

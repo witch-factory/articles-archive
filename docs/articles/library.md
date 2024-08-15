@@ -44,3 +44,6 @@ react query useQuery 동작 원리
 
 https://www.timegambit.com/blog/digging/react-query/01
 
+Using WebSockets with React Query
+
+https://tkdodo.eu/blog/using-web-sockets-with-react-query

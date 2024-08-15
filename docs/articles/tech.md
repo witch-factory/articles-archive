@@ -107,3 +107,15 @@ https://evan-moon.github.io/2024/02/06/category-theory-for-programmers-2-types-a
 디자인 시스템, 코드를 넘어서
 
 https://so-so.dev/react/design-system-beyond-code/
+
+200여개 서비스 모노레포의 파이프라인 최적화
+
+https://toss.tech/article/monorepo-pipeline
+
+Yarn 대신 pnpm으로 넘어간 3가지 이유
+
+https://engineering.ab180.co/stories/yarn-to-pnpm
+
+What are Factories in Domain Driven Design?
+
+https://culttt.com/2014/12/24/factories-domain-driven-design/
