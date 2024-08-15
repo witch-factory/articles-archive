@@ -148,3 +148,15 @@ https://github.com/reactwg/server-components/discussions/5
 useReducer vs useState 1. useToggle hook
 
 https://velog.io/@jihyeonjeong11/useReducer-vs-useState
+
+새롭게 발표된 React 19 버전은 무엇이 달라졌나?
+
+https://devocean.sk.com/blog/techBoardDetail.do?ID=165995&boardType=techBlog&searchData=&page=&subIndex=
+
+React 디자인패턴 (Presentational-Container, VAC패턴)
+
+https://velog.io/@inwoong100/React-%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4-Presentational-Container-VAC%ED%8C%A8%ED%84%B4
+
+debounce 및 throttle를 react에서 사용할 때 주의할 점
+
+https://yrnana.dev/post/2023-09-15-debounce-throttle/

@@ -4,6 +4,10 @@ title: 잡다한 기술 아티클
 description: 잡다한 기술 글들을 저장
 ---
 
+실용적인 테스트 피라미드 (번역)
+
+https://www.integer.blog/practical-test-pyramid/?ref=linkedin.com
+
 더 자유롭고, 빠르고, 정확하게: 토스페이먼츠 API 문서 엔지니어링
 
 https://toss.tech/article/docs-engineering
@@ -87,3 +91,19 @@ https://ktseo41.github.io/blog/log/how-core-web-vital-affect-seo.html
 What's the difference between ISO 8601 and RFC 3339 Date Formats?
 
 https://stackoverflow.com/questions/522251/whats-the-difference-between-iso-8601-and-rfc-3339-date-formats
+
+Implementing for Loops
+
+https://senocular.github.io/articles/js_implementing_for_loops.html
+
+잘 쓰면 아주 좋은 git-rebase onto 옵션
+
+https://driip.me/3e206178-8e6c-4519-be35-55b5afeab30b
+
+프로그래머를 위한 카테고리 이론
+
+https://evan-moon.github.io/2024/02/06/category-theory-for-programmers-2-types-and-functions/
+
+디자인 시스템, 코드를 넘어서
+
+https://so-so.dev/react/design-system-beyond-code/

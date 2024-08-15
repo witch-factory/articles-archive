@@ -4,6 +4,10 @@ title: Typescript에 관한 글
 description: Typescript에 관한 글들을 저장
 ---
 
+API 문서화, TS 타입만 있으면 해결! – Tspec
+
+https://ridicorp.com/story/tspec-api-documentation/
+
 Assertions: How to Assert Conditions and Types
 
 https://dev.to/zirkelc/assertions-how-to-assert-conditions-and-types-mep

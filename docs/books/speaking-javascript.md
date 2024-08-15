@@ -69,6 +69,39 @@ if (x === void 0){
 }
 ```
 
+## void 연산자
+
+```js
+void expr;
+```
+
+void 연산자는 피연산자인 표현식을 평가하고 undefined를 반환한다. 당연히 할당문 같은 건 평가되면서 수행된다.
+
+```js
+var x;
+void (x=123); // undefined
+console.log(x); // 123
+```
+
+또한 우선순위에 주의해야 한다. void는 우선순위가 매우 높아서 보통 다른 연산자보다 우선적으로 고려된다. 따라서 괄호로 묶어주는 게 좋다.
+
+```js
+void 3+1; // (void 3) + 1 즉 undefined + 1이 되어 NaN이다.
+```
+
+void는 크게 많이 쓰이지는 않지만 표현식 평가 결과와 상관없이 undefined를 반환하고 싶을 때 쓰인다. 예를 들어 `javascript:URL`을 쓸 때 void를 쓸 수 있다. 이런 URL을 방문시 브라우저 대부분은 현재 문서 URL을 URL 콘텐츠를 평가한 결과로 대체한다. 하지만 undefined가 평가 결과일 땐 예외다.
+
+따라서 새 창을 열면서 현재 콘텐츠는 바꾸지 말아야 할 경우 이런 식으로 할 수 있다.
+
+```js
+<a href="javascript:void window.open('http://example.com')">새 창 열기</a>
+```
+
+> 넷스케이프 2가 출시되기 전에 javascript: URL에서 undefined가 아닌 값을 제외하기 쉽게 하려고 void 연산자를 자바스크립트에 추가했습니다.
+>
+> Brendan Eich의 말 인용, "자바스크립트를 말하다" 163쪽
+
+
 ## arguments
 
 함수 매개변수는 모두 유사 배열 객체 arguments에 담긴다. 이는 length 프로퍼티를 가지며 배열처럼 인덱스로 접근할 수 있다. 하지만 배열 메서드는 하나도 없다.
@@ -553,3 +586,169 @@ arr.sort(function(a, b){
 
 `NaN`은 자기 자신과도 불일치한다. 이는 `===` 연산자로 비교할 때 `false`가 나오는 것이다. 이는 `NaN`이 `NaN`과 같지 않다는 것을 의미한다. `NaN`인지 체크하기 위해서는 특수한 `isNaN` 함수를 써야 한다.
 
+## 변수 존재 체크
+
+다음 코드는 2가지로 사용된다.
+
+```js
+// x가 undefined인지 확인
+// x가 선언된 변수(즉 존재하는지)인지 확인
+typeof x === 'undefined';
+```
+
+특히 이는 변수가 존재하는지 확인할 때 유용한데 변수가 존재하지 않을 때 `undefined`와 직접 비교하면 에러가 나기 때문이다.
+
+```js
+if(x === undefined){
+  // ReferenceError: x is not defined
+}
+```
+
+# 불린
+
+## 빈 객체는 truthy
+
+빈 객체는 `true`로 평가된다. 불린으로 변환할 때 false로 평가되는 값은 다음과 같다. 이외에는 빈 객체까지도 모두 `true`로 평가된다.
+
+- `false`
+- `undefined`
+- `null`
+- `0`
+- `NaN`
+- `''`
+
+참고로 객체를 Number나 String으로 바꿀 땐 `valueOf`, `toString` 메서드를 차례로 호출하므로 이 메서드를 잘 구현해두면 객체를 숫자나 문자열로 바꿀 때 원하는 값으로 바꿀 수 있다. 단 Boolean 함수를 쓸 시 위와 같이 falsy 값만 제외하고는 모두 `true`로 평가된다.
+
+```js
+var obj = {
+  valueOf: function(){
+    return 1;
+  },
+  toString: function(){
+    return 'my string';
+  }
+};
+
+Number(obj); // 1
+String(obj); // 'my string'
+```
+
+## 논리 연산자 단축 평가
+
+`&&`, `||`는 단축 평가된다. `&&`는 왼쪽 피연산자가 `false`이면 오른쪽 피연산자를 평가하지 않는다. `||`는 왼쪽 피연산자가 `true`이면 오른쪽 피연산자를 평가하지 않는다.
+
+```js
+true || console.log('hi'); // true.
+// true만으로도 결과가 나오므로 오른쪽 피연산자는 평가되지 않는다.
+false || console.log('hi'); // hi, undefined
+// console.log의 리턴값은 undefined이다.
+```
+
+## 숫자 리터럴 메서드 호출
+
+숫자 리터럴에 메서드를 호출할 때는 점 연산자와 소수점의 구별이 필요하다. 따라서 숫자 리터럴에서 메서드를 호출할 때는 다음과 같이 해야 한다.
+
+```js
+123..toString(); // '123'
+123 .toString(); // '123'
+123.0.toString(); // '123'
+(123).toString(); // '123'
+```
+
+## 숫자 형변환
+
+undefined -> NaN, null -> 0, true -> 1, false -> 0, 숫자 -> 그대로, 문자열 -> 앞뒤 공백을 무시하고 숫자로 파싱. 빈 문자열은 0. 객체는 `ToPrimitive`를 거쳐서 숫자로 변환된다.
+
+이때 빈 문자열은 NaN이 될 거 같지만 0이 된다. 이는 숫자형 input field가 비었을 때 제출되는 값이 0이 되도록 하기 위함이다. 1990년대 중반에는 Perl 등 이렇게 처리하는 다른 언어가 많았다고 한다. https://twitter.com/BrendanEich/status/427241246315147264 의 브랜든 아이크의 트윗을 보면 알 수 있다.
+
+## JS 문자열
+
+JS 문자열은 immutable 문자 시퀀스이다. 각 문자는 UTF-16 코드 단위로 하나의 유니코드 문자를 나타낸다. 그리고 `[]` 외에도 `charAt`으로 특정 인덱스 문자를 가져올 수 있다.
+
+## 문자열 변환
+
+다음 같은 3가지 방법이 있다. 그런데 `toString()` 메서드가 가장 직관적임
+
+- `String(value)`
+- `''+value`
+- `value.toString()`
+
+단 객체 등 데이터를 표시할 땐 `JSON.stringify`를 쓰는 게 낫다. 물론 stringify도 함수 등 처리할 수 없는 프로퍼티는 숨긴다. 그래도 `JSON.stringify`의 반환값은 중첩된 데이터를 깔끔하게 변환할 수 있고 eval 파싱도 가능하다.
+
+## 문자열 비교
+
+문자열 비교는 단순히 유니코드 코드 포인트로 비교한다. 이는 문자열을 비교할 때 대소문자를 구분한다는 뜻이고 또한 악센트, 움라우트 등이 비교에 반영되지 않는다는 뜻이다. 따라서 `String.prototype.localeCompare`를 쓰면 이런 문제를 해결할 수 있다.
+
+```js
+'ä'.localeCompare('z'); // -1
+```
+
+결과가 0보다 작으면 메서드를 호출한 문자열이 매개변수보다 작다는 것이고, 0보다 크면 메서드를 호출한 문자열이 매개변수보다 크다는 것이다. 가령 위의 경우 `ä`는 `z`보다 작으므로 -1이 반환된다.
+
+```js
+String.prototype.localeCompare.call('ä', 'z'); // -1
+String.prototype.localeCompare(other); // 문자열과 other를 비교한다.
+// 문자열이 other보다 앞이면 <0, 같으면 0, 뒤면 >0이 반환
+```
+
+`localeCompare` 메서드가 모든 엔진에서 잘 구현된 것은 아니다. 예전에는 비교 연산자를 단순히 따르는 엔진도 있었다. 하지만 ECMAScript 국제화 api는 유니코드를 염두하고 만들었으므로 이 api를 사용 가능하면 `localeCompare`도 제대로 동작한다. `localeCompare`의 지원 여부는 국제화 api 구현을 체크하면 된다.
+
+## for..in
+
+for..in은 `enumerable`이 false라서 순회 불가능한 객체를 제외하고 객체의 모든 프로퍼티를 순회한다. 이때 프로퍼티의 순서는 보장되지 않는다. 또한 프로토타입 체인에서 상속된 프로퍼티까지 순회한다. 이를 방지하기 위해 `hasOwnProperty` 메서드를 쓸 수는 있다.
+
+```js
+// 상속된 프로퍼티까지 순회
+function Person(name){
+  this.name = name;
+}
+Person.prototype.describe = function(){
+  return 'Person Name ' + this.name;
+};
+
+var jane = new Person('Jane');
+for(var prop in jane){
+  console.log(prop);
+}
+// name, describe
+
+// hasOwnProperty로 상속된 프로퍼티 제외
+for(var prop in jane){
+  if(jane.hasOwnProperty(prop)){
+    console.log(prop);
+  }
+}
+// name
+```
+
+그런데 이때 객체에 `hasOwnProperty`라는 프로퍼티가 있다면 체크 자체가 불가능하다. 이를 배제하려면 `Object.prototype.hasOwnProperty.call(obj, prop)`과 같이 범용 메서드를 프로토타입에서 가져와서 call을 이용해 쓰면 된다.
+
+```js
+for(var prop in jane){
+  if(Object.prototype.hasOwnProperty.call(jane, prop)){
+    console.log(prop);
+  }
+}
+```
+
+for..in은 배열 순회시 쓰는 건 좋지 않다. for..in은 값이 아니라 인덱스를 순회하며 배열에 프로퍼티를 추가시 이 프로퍼티까지 순회한다. 따라서 배열 순회시는 일반적인 for문을 이용한 인덱스 순회나 `for..of`나 `forEach`를 쓰는 게 좋다.
+
+## switch
+
+switch는 매개변수로 온 표현식을 평가하고 각 case의 표현식과 `===`로 비교한다. C처럼 점프 테이블을 만드는 게 아니기 때문에 매개변수나 case에 어떤 형태 표현식이든 쓸 수 있다.
+
+```js
+switch(true){
+  case x<0:
+    console.log('negative');
+    break;
+  case x===0:
+    console.log('zero');
+    break;
+  case x>0:
+    console.log('positive');
+    break;
+}
+```
+
+물론 이렇게 쓰는 것보다는 if문을 쓰는 게 더 명확하겠지만 어쨌든 표현식을 얼마든지 case등에 쓸 수 있다는 것이다.

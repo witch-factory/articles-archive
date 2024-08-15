@@ -23,3 +23,19 @@ https://dt101.tistory.com/m/28
 making Cards UI
 
 https://inclusive-components.design/cards/
+
+oklch()
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch
+
+피그마의 모든 것, 프레임 편
+
+https://brunch.co.kr/@smu00/2
+
+피그마(Figma) 꿀팁 : 그리드 생성 방법 및 라이브러리 스타일로 지정하는 방법
+
+https://yeon-design.tistory.com/19#google_vignette
+
+@import CSS in createGlobalStyle 경고 (react-helmet)
+
+https://velog.io/@rmaomina/cssom-import-css-wraning

@@ -27,3 +27,20 @@ https://github.com/dai-shi/use-context-selector
 Framer-motion 라이브러리 훑어보기
 
 https://nykim.work/114
+
+디자인시스템을 개발에서 적용 하는법
+
+https://d2.naver.com/helloworld/7030870
+
+프론트엔드 상태관리 실전 편 with React Query & Zustand
+
+https://www.youtube.com/watch?v=nkXIpGjVxWU
+
+`[번역] NPM의 중첩된 종속성`
+
+https://blog.holy.kiwi/translate/nested-dependencies/
+
+react query useQuery 동작 원리
+
+https://www.timegambit.com/blog/digging/react-query/01
+

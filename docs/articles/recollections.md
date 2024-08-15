@@ -11,3 +11,7 @@ https://brunch.co.kr/@ryuing/19
 jojoldu님의 2022 CTO 회고
 
 https://jojoldu.tistory.com/694
+
+비전공자 프론트엔드 개발자는 왜 네트워크 책을 썼을까
+
+https://brunch.co.kr/@swimjiy/51

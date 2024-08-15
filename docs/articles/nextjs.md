@@ -16,3 +16,7 @@ https://nextjs.org/docs/app/building-your-application/data-fetching/server-actio
 Best practices to increase the speed for Next.js apps
 
 https://stackoverflow.blog/2022/12/20/best-practices-to-increase-the-speed-for-next-js-apps/
+
+RSC From Scratch. Part 1: Server Components
+
+https://github.com/reactwg/server-components/discussions/5
