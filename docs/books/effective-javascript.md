@@ -114,6 +114,8 @@ const obj={
 
 ECMAScript 라이브러리 중 일부, `encodeURI`, `decodeURI`, `encodeURIComponent`, `decodeURIComponent`같은 URI 조작 함수들은 서로게이트 쌍을 정확히 처리한다.
 
+## 2024.08.23
+
 - 아이템 8. 전역 객체 사용 최소화
 
 JS의 전역 네임스페이스는 전역 객체로도 노출되어 있다. 이는 프로그램 최상단에서 `this`로 접근 가능하다. 브라우저에서는 `window`, Node.js에서는 `global`이 전역 객체이다. 전역 변수를 추가하거나 수정하면 전역 객체에 프로퍼티가 추가되거나 수정된다.
@@ -124,3 +126,155 @@ console.log(window.a); // 1
 window.a=2;
 console.log(a); // 2
 ```
+
+물론 전역 변수를 사용한다면 전역 객체를 사용하는 것보다 `var`로 선언하는 게 좋다.
+
+전역 객체 사용은 최소화하는 게 좋다. 하지만 전역 객체는 환경을 동적으로 반영하기 때문에, 플랫폼에서 사용 가능한 기능 탐지를 위해서는 사용해야 한다.
+
+```js
+if (typeof window !== 'undefined') {
+  // 브라우저 전용 코드
+}
+
+if (Array.prototype.includes === undefined) {
+  // includes 메서드가 없는 환경에서만 실행되는 폴리필
+}
+```
+
+- 아이템 9. 항상 지역변수를 선언하라
+
+변수를 선언하지 않고 사용하면 JS에서는 자동으로 전역 변수로 선언된다. 스코프에 상관없이 전역 변수가 된다. 이는 의도치 않은 변수 충돌을 일으킬 수 있으므로 주의하자. 물론 이는 엄격 모드에서는 다행히 금지된다.
+
+- 아이템 10. with를 사용하지 마라
+
+하나의 객체에서 여러 메서드를 호출하려고 할 시 해당 객체에 대한 참조를 반복하지 않으려고 쓰는 with문
+
+```js
+function status(info){
+  var widget= new Widget();
+  with(widget){
+    setBackground('blue'); // Widget.prototype.setBackground에서 찾음
+    setForeground('white');
+    setText("Status: " + info); // 이 info는 원래 함수 인수에서 오는 것으로 의도됨
+    show();
+  }
+}
+```
+
+그러나 이러면 `with`의 프로퍼티를 통해 참조하려고 하던 변수와 외부 변수 바인딩에서 참조하길 바라는 변수를 구별할 방법이 없어 혼란이 발생할 수 있다. 일반적인 스코프 체인 탐색 과정에서 `with`의 프로퍼티와 프로토타입 체인이 끼어들어간 것 뿐이기 때문이다.
+
+즉 프로그램의 다른 부분에서 `with`에 전달된 객체 혹은 그 객체의 프로토타입에 새로운 프로퍼티가 추가되면 `with` 블록 내부에서 의도치 않게 그 프로퍼티를 참조할 수 있다. 예를 들어 위 코드에서 widget 객체에 info 프로퍼티를 갖게 되면(혹은 `Widget.prototype`이 `info`를 갖게 되면) `setText` 메서드는 함수에서 인수로 받은 info 대신 widget의 info 프로퍼티를 사용하게 된다.
+
+당연히 그냥 새 변수를 선언하고 사용하는 게 안전하다.
+
+```js
+function status(info){
+  var widget= new Widget();
+  widget.setBackground('blue');
+  widget.setForeground('white');
+  widget.setText(text);
+  widget.show();
+}
+```
+
+- 아이템 11. 클로저에 익숙해져라
+
+함수 자신을 포함하는 스코프의 변수들을 추적하는 함수를 클로저라고 한다. 이는 함수가 종료되어도 변수가 사라지지 않게 하고, 참조를 저장하기 때문에 함수가 종료된 후에도 변수에 접근하여 변경도 할 수 있다.
+
+- 아이템 12. 변수 호이스팅에 대해 이해하라
+- 아이템 13. 지역 변수 스코프를 만들기 위해 IIFE를 사용하라
+
+JS var는 함수 스코프다. 그러면 호이스팅은 변수 선언을 함수 스코프 최상위로 끌어올린다는 것만 기억. 그리고 같은 스코프에서 var로 변수를 재선언하는 건 호이스팅에 의해 1개의 변수 선언처럼 처리된다.
+
+```js
+function isWinner(player, others){
+  var highest = 0;
+  for(var i=0; i<others.length; i++){
+    var player = others[i];
+    if(player.score > highest){
+      highest = player.score;
+    }
+  }
+  // 함수 인수가 아니라 for문 내에서 선언된 player 변수를 사용하게 됨
+  return player.score > highest;
+}
+```
+
+ES3 시절에도 블록 스코프가 지원되는 예외적이었던 상황 중 하나는 exception이었다. try-catch-finally 블록 내에서 선언된 변수는 블록 스코프를 갖는다. try-catch는 exception을 잡아서 변수로 바인딩하고 해당 변수는 catch 블록 안에서만 스코프가 적용된다.
+
+```js
+function test(){
+  var x="var", result=[];
+  result.push(x);
+  try{
+    throw "exception";
+  }catch(x){
+    // catch 블록 내부에서 x는 catch "블록" 스코프를 갖는다.
+    // 외부 x에 영향을 미치지 않음
+    x="catch";
+  }
+  result.push(x);
+  return result;
+}
+test(); // ["var", "var"]
+```
+
+클로저와 함수 스코프 때문에 이런 버그가 만들어진다.
+
+```js
+function wrapElements(a){
+  var result=[];
+  for(var i=0, n=a.length; i<n; i++){
+    result[i]=function(){
+      return a[i];
+    };
+  }
+  return result;
+}
+
+var wrapped = wrapElements([10, 20, 30, 40, 50]);
+var f = wrapped[0];
+f(); // undefined
+```
+
+이 코드는 반복문을 순회할 때마다 `result[i]`에 새로운 함수를 만들어서 저장한다. 그런데, 우리의 의도는 `result[i]()`에 `a[i]`가 나오게 하는 거였다.
+
+`i`, `n`은 for문 블록에 한정된 변수가 아니고 함수 스코프에 속한다. 그리고 호이스팅되어서 사실상 함수 최상단에 선언된 것이나 다름없다.
+
+이 wrapElements 내부에서 생성되어 `result[i]`에 할당된 함수는 i의 값을 명백히 저장하고 있는 게 아니라 외부 변수 i에 대한 참조를 저장하고 있다. 따라서 `result[0]()`을 호출할 때 i는 이미 `a.length`인 5가 되어 있고 `a[5]`는 `undefined`이므로 `undefined`가 반환된다.
+
+이렇게 클로저는 외부 변수의 값이 아니라 참조를 가리킨다. 따라서 `wrapElement`에서 생성된 함수의 모든 클로저는 호이스팅된 `i`에 대한 참조를 공유한다.
+
+이를 해결하기 위해서는 ES6의 let, const 이전 기준으로 IIFE를 사용하여 새로운 스코프를 만들어야 한다.
+
+```js
+function wrapElements(a){
+  var result=[];
+  for(var i=0, n=a.length; i<n; i++){
+    (function(){
+      var j=i;
+      result[i]=function(){
+        return a[j];
+      };
+    })();
+  }
+  return result;
+}
+
+// 혹은 지역 변수를 IIFE 인수로 전달
+function wrapElements(a){
+  var result=[];
+  for(var i=0, n=a.length; i<n; i++){
+    (function(j){
+      result[i]=function(){
+        return a[j];
+      };
+    })(i);
+  }
+  return result;
+}
+```
+
+단 이렇게 지역 스코프를 만들기 위해 IIFE를 사용할 때는 조심해야 한다. 블록 바깥으로 나가기 위한 break, continue 명령을 쓸 수 없어지고 this, arguments의 해석이 달라지기 때문이다. 3장에서 다룬다고 한다.
+
+- 아이템 14. 기명 함수 표현식 스코프에 주의하라
