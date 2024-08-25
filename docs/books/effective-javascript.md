@@ -277,4 +277,240 @@ function wrapElements(a){
 
 단 이렇게 지역 스코프를 만들기 위해 IIFE를 사용할 때는 조심해야 한다. 블록 바깥으로 나가기 위한 break, continue 명령을 쓸 수 없어지고 this, arguments의 해석이 달라지기 때문이다. 3장에서 다룬다고 한다.
 
+## 20240825
+
 - 아이템 14. 기명 함수 표현식 스코프에 주의하라
+
+함수 표현식은 익명 함수를 생성하는 데에 사용할 수 있다. 예를 들어 다음과 같이 말이다. 이렇게 하면 인수를 제곱해서 돌려주는 함수가 변수 `square`에 바인딩된다.
+
+```js
+var square = function(x){
+  return x*x;
+};
+```
+
+그런데 이런 함수 표현식에도 이름을 지정할 수 있다. 이를 기명 함수 표현식이라고 한다. 기명 함수 표현식은 함수 표현식 스코프 내에서만 유효한 이름을 갖는다. 따라서 함수 내부에서 자신을 재귀적으로 호출할 때 유용하다.
+
+단 이렇게 함수 표현식에 지정한 이름은 함수 내부에서만 스코프가 적용된다. 함수 선언문과 달리 기명 함수 표현식은 함수 이름을 외부에서 참조할 수 없다.
+
+```js
+var f = function fact(x){
+  // 이 내부에서 fact를 지역 변수로 사용할 수 있다.
+  if(x<=1) return 1;
+  return x*fact(x-1);
+};
+
+f(3); // 6
+fact(3); // ReferenceError: fact is not defined. fact는 함수 선언의 스코프 내에서만 유효하다.
+```
+
+사실 이렇게 재귀를 위해 기명 함수 표현식을 사용하는 건 함수가 바인딩된 변수명을 사용하거나 함수 선언문을 사용하는 대체재가 있다. 또한 최신 JS 환경은 에러 추적을 위해 스택 트레이스를 할 때 함수 표현식 이름을 사용한다. 따라서 기명 함수 표현식은 디버깅에 매우 유용하다.
+
+하지만 이전 JS 엔진에서의 버그와 명세 실수로 인해 기명 함수 표현식은 많은 버그를 만들었다. ES3 명세에서는 기명 함수 표현식 스코프를 객체로 표현하도록 했다. 이 스코프 객체는 그 함수 이름을 바인딩하는 프로퍼티 하나만 가지지만, 그 이전에 객체로서 `Object.prototype`을 상속받았다. 이는 기명 함수 표현식을 사용하면 `Object.prototype`의 프로퍼티가 기명 함수 표현식의 스코프에 노출되는 버그를 만들었다.
+
+```js
+// ES3 실행 환경에서
+function constructor(){return null;}
+
+var f = function f(){
+  return constructor();
+};
+
+f(); // null이 아니라 {}가 반환된다.
+```
+
+원래 의도대로라면 `f` 내부의 `constructor`는 외부 스코프의 `constructor`를 참조해서 null을 반환해야 한다. 하지만 기명 함수 표현식 `f`는 `Object.prototype`를 상속하므로 `constructor`는 `Object.prototype.constructor`를 가리키게 된다. 따라서 `f` 내부의 `constructor`는 `Object.prototype.constructor`를 가리키게 되어 빈 객체를 반환한다.(모든 객체는 prototype.constructor으로 인스턴스의 프로토타입을 만든 `Object` 생성자의 참조를 가리킨다)
+
+그리고 프로토타입 상속 특성상 `Object.prototype`이 변경되면 기명 함수 표현식 스코프도 동적으로 영향을 받게 된다. 또 당시 몇몇 실행 환경에서는 익명 함수 표현식의 스코프도 객체로 취급해 버리는 버그가 있었다고 한다...
+
+ES5에서는 이 문제가 수정되었다.
+
+이전 환경에서 이렇게 함수 표현식 스코프가 객체 프로토타입으로 오염되는 문제를 막는 최선의 방법은 `Object.prototype`에 새로운 프로퍼티를 절대 추가하지 않고 지역 변수 이름으로 `Object.prototype`의 프로퍼티명을 절대 사용하지 않는 것이다.
+
+그리고 예전의 몇 엔진에서는 기명 함수 표현식을 선언문처럼 호이스팅하기도 했다.
+
+```js
+// 이 코드는 ES3 시절 일부 엔진의 버그를 나타낸다
+var f= function g(){return 1;};
+g() // 1
+```
+
+이렇게 기명 함수 표현식과 같은 이름으로 지역 변수를 만들고 null을 할당하여 해결할 수도 있다.
+
+```js
+var f = function g(){return 1;};
+var g=null;
+```
+
+하지만 가독성도 떨어진다.. 기명 함수 표현식은 사용하기에는 문제가 많다. 디버깅할때만 필요시 사용하자. 실제 코드에서는 함수 표현식은 모두 익명인 게 좋다. 단 요즘은 대부분이 ES5 이상을 지원하므로 이런 문제는 거의 없을 것이다.
+
+**ES5를 제대로 구현한 실행 환경에 배포한다면 아무런 걱정을 할 필요가 없다.(65쪽)**
+
+- 아이템 15. 블록-지역 함수 선언문 스코프에 주의하라
+
+다른 함수 내부의 최상단 스코프에 함수 선언문을 넣는 건 완전히 잘 작동한다.
+
+```js
+function f(){
+  return "global";
+}
+
+function test(x){
+  function f(){
+    return "local";
+  }
+  var result=[];
+  if(x){
+    result.push(f());
+  }
+  result.push(f());
+  return result;
+}
+
+test(true); // ["local", "local"]
+```
+
+그런데 지역 블록 안에서 함수 선언문을 쓰면?
+
+```js
+function f(){
+  return "global";
+}
+
+function test(x){
+  var result=[];
+  if(x){
+    function f(){
+      return "local";
+    }
+    result.push(f());
+  }
+  result.push(f());
+  return result;
+}
+
+test(true); // ES3까지는 제대로 예측할 수 없다
+```
+
+ES5 이전까지는 이런 부분에 대한 명세 기준이 없었다. 단 이는 엄격 모드에서 금지되었다.
+
+[엄격 모드는 스크립트나 함수의 최상위 레벨이 아닌 곳에서의 함수 내용 정의를 제한한다.](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Strict_mode#%EB%AF%B8%EB%9E%98%EC%9D%98_ecmascript_%EB%B2%84%EC%A0%84%EC%9D%84_%EC%9C%84%ED%95%9C_%EC%A4%80%EB%B9%84)
+
+함수 선언은 어쨌든 스크립트나 함수의 최상위 블록 레벨에 두는 게 문제를 막을 수 있다.
+
+만약 정말로 함수들을 조건에 따라 선택해야 한다면 var로 함수 표현식을 사용하자. 이러면 할당만 조건부로 실행되므로 완전히 예상할 수 있는 결과를 얻을 수 있다.
+
+```js
+function f(){
+  return "global";
+}
+
+function test(x){
+  var result=[];
+  var g = f;
+  if(x){
+    g = function(){
+      return "local";
+    };
+    result.push(g());
+  }
+  result.push(g());
+  return result;
+}
+
+test(true); // ["local", "local"]
+test(false); // ["global"]
+```
+
+- 아이템 16. eval로 지역 변수를 생성하지 마라
+
+eval은 사용하지 않는 게 좋다. 엄격 모드에선 좀 나아졌다고 하지만...
+
+eval은 인자로 받은 문자열을 JS 프로그램처럼 해석하고 실행한다. 그런데 엄격 모드 이전의 eval은 eval이 호출된 스코프에 새로운 변수를 동적으로 추가할 수 있었다.
+
+```js
+function test(x){
+  eval("var y=x;");
+  return y;
+}
+
+test(10); // 10
+```
+
+이는 명확하지만 변수 선언문이 test함수 본문에 있는 것과는 동작이 약간 다르다. 이 선언은 eval이 호출될 때만 실행된다. 조건절에서 써보면 알 수 있다.
+
+```js
+function test(x){
+  if(x){
+    eval("var y=x;");
+  }
+  return y;
+}
+
+test(10); // 10
+test(0); // ReferenceError: y is not defined
+```
+
+스코프를 런타임에 정하도록 하는 건 대부분 좋지 않다. 이는 소스코드를 eval에 동적으로 전달하도록 할 때 특히 더 어려워진다.
+
+```js
+// 엄격 모드 이전
+var y="global";
+function test(src){
+  eval(src);
+  return y;
+}
+
+test("var y='local';"); // "local"
+test("var z='local';"); // "global"
+```
+
+
+엄격 모드가 아닐 때 동작하는 이런 코드는 안전하지 않다. 외부 호출자가 test 함수 내부 스코프를 변경할 수 있기 때문이다.
+
+ES5의 엄격 모드는 eval을 감싸진 스코프에서 실행하도록 한다. 즉시 실행 함수를 사용하면 비슷하게 eval이 외부 스코프에 영향을 주지 않도록 제한할 수 있다.
+
+그러니 엄격 모드가 아닌 상태이고 eval 코드가 전역 변수를 생성할 가능성이 있다면 함수로 감싸 실행하는 것도 좋다.
+
+```js
+var y="global";
+function test(src){
+  (function(){
+    eval(src);
+  })();
+  return y;
+}
+
+test("var y='local';"); // "global"
+```
+
+- 아이템 17. 직접적인 eval보다는 간접적인 eval
+
+eval 식별자를 직접 포함하는 건 직접적인 eval 호출이다. eval 식별자 호출은 다음과 같이 직접적인 호출로 간주된다. 이렇게 하면 eval이 실행한 프로그램은 호출자의 지역 스코프에서 평가된다. 이게 우리가 아는 일반적인 eval의 동작이다.
+
+이렇게 직접적으로 eval을 호출하는 방법은 eval이라는 이름을 직접 사용하는 것 뿐이다.
+
+반면 eval을 다른 변수명으로 바인딩한 후 호출하는 것같이 간접적으로 호출하면 eval이 실행한 프로그램은 호출자의 지역 스코프가 아닌 전역 스코프에서 평가된다.
+
+```js
+var x="global";
+function test(){
+  var x="local";
+  var f = eval;
+  return f("x");
+}
+
+test(); // "global"
+```
+
+이렇게 간접적인 eval을 호출하는 좋은 방법은 이렇게 숫자 리터럴과 쉼표 연산자를 사용하는 것이다.
+
+```js
+(0, eval)(source);
+```
+
+이렇게 하면 괄호로 싸인 식은 쉼표 연산자에 의해 `eval`함수를 반환하고, 이렇게 만들어진 eval을 사용하면 간접적으로 호출되어 호출된 스코프가 호출자의 스코프가 아닌 전역 스코프에서 평가된다.
+
+직접 eval을 사용하는 건 내부 스코프를 신뢰할 수 없는 코드에게 노출시킬 수 있는 위험을 늘리고 성능을 저하시킨다. 직접적인 eval은 지역 스코프를 조사해야 하는 추가적인 능력이 확실히 필요할 경우에만 사용해야 한다. 그렇지 않을 경우 간접적 eval을 사용하자.
+
+물론 eval은 사용하지 않는 게 좋다.
