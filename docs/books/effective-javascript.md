@@ -514,3 +514,71 @@ test(); // "global"
 직접 eval을 사용하는 건 내부 스코프를 신뢰할 수 없는 코드에게 노출시킬 수 있는 위험을 늘리고 성능을 저하시킨다. 직접적인 eval은 지역 스코프를 조사해야 하는 추가적인 능력이 확실히 필요할 경우에만 사용해야 한다. 그렇지 않을 경우 간접적 eval을 사용하자.
 
 물론 eval은 사용하지 않는 게 좋다.
+
+## 2024.08.26
+
+- 아이템 18. 함수, 메서드, 생성자 호출의 차이를 이해하라
+
+ES6 이전의 JS에서는 함수, 메서드, 생성자가 모두 function 키워드를 이용해야 했다.
+
+메서드 호출 시 호출 표현식이 어떤 객체를 통해 호출되느냐에 따라 `this` 객체의 바인딩이 정해진다. 메서드가 정의된 객체가 아니라 메서드를 호출한 객체가 `this`가 된다.
+
+```js
+var obj = {
+  hello: function(){
+    return "hello " + this.username;
+  },
+  username: "witch"
+}
+
+var obj2={
+  username: "may",
+  hello: obj.hello
+}
+
+obj.hello(); // "hello witch"
+obj2.hello(); // "hello may"
+```
+
+이는 여러 객체에서 공유되는 함수를 만들 때 쓸 수도 있지만 이럴 경우 프로토타입을 쓰는 게 낫다고 보이기는 한다.
+
+```js
+function hello(){
+  return "hello " + this.username;
+}
+
+var obj = {
+  hello: hello,
+  username: "witch"
+}
+
+var obj2={
+  hello: hello,
+  username: "may"
+}
+```
+
+그러나 이렇게 this를 사용하는 함수를 전역에서 함수로 호출하게 되면 전역 객체 프로퍼티(즉, 전역 변수)를 조회하게 되므로 일반적으로 그렇게 유용하지 않다.
+
+사실 전역 객체로 this를 바인딩하는 건 문제의 소지가 있어서 ES5에 엄격 모드에서는 전역 함수 호출 시 this가 undefined로 바인딩된다.
+
+```js
+function hello(){
+  "use strict";
+  return "hello " + this.username;
+}
+
+hello(); // TypeError: Cannot read property 'username' of undefined
+```
+
+`new` 키워드와 함께 함수를 생성자로 쓰면 this 값으로 새로운 객체를 전달하고 암묵적으로 이 객체를 함수 결과로 반환한다. 생성자 함수를 이용해서 초기화된 객체를 찍어낼 수 있다.
+
+- 아이템 19. 고차 함수에 익숙해져라
+
+고차 함수: 다른 함수를 인자로 받거나(콜백 함수) 함수를 결과로 반환하는 함수
+
+대표적으로 배열의 `.sort()`메서드가 있다.
+
+또한 비슷한 형식으로 함수를 호출하는 것을 보게 되면 이를 콜백을 사용하는 고차 함수로 추상화해서 코드를 간결하게 만들 수 있다.
+
+이렇게 고차 함수로 만들면 반복문의 경계를 지역적으로 지정하는 등 좀더 유연한 방식으로 공통 로직을 추출할 수 있다. 그리고 버그나 최적화를 할 때도 고차 함수를 한번만 수정하면 되므로 유지보수가 쉬워진다.
