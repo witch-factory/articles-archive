@@ -582,3 +582,219 @@ hello(); // TypeError: Cannot read property 'username' of undefined
 또한 비슷한 형식으로 함수를 호출하는 것을 보게 되면 이를 콜백을 사용하는 고차 함수로 추상화해서 코드를 간결하게 만들 수 있다.
 
 이렇게 고차 함수로 만들면 반복문의 경계를 지역적으로 지정하는 등 좀더 유연한 방식으로 공통 로직을 추출할 수 있다. 그리고 버그나 최적화를 할 때도 고차 함수를 한번만 수정하면 되므로 유지보수가 쉬워진다.
+
+## 2024.08.27
+
+- 아이템 20. call 메서드를 사용하라
+
+this 객체를 특정 객체로 지정해서 함수를 호출할 수 있다. 이를 위해 `call` 메서드를 사용한다.
+
+```js
+// obj를 this로 하여 f를 호출하기 위해
+// 물론 이렇게 임시로 메서드를 추가할 수도 있다.
+obj.temp = f;
+var result = obj.temp(arg1, arg2);
+delete obj.temp;
+
+// 충돌 위험 등을 피하기 위해 call을 사용하자
+var result = f.call(obj, arg1, arg2); // f의 this를 obj로 지정하여 호출
+```
+
+이는 할당에 의해 덮어써지지 않은 메서드 사용을 보장해야 할 때 응용할 수 있다.
+
+```js
+// 함수 덮어쓰기
+dict.hasOwnProperty = function(){
+  return false;
+};
+
+// 이런 경우 다른 객체에서 메서드를 빌려온 후 call을 사용하면 된다.
+var hasOwn = {}.hasOwnProperty;
+// 다른 데에 있는 key 변수를 사용한다 가정
+// 이러면 dict의 메서드가 덮어써지는 데 대한 걱정을 할 필요도 없고 dict에 없는 메서드를 사용할 수도 있다.
+var result = hasOwn.call(dict, key);
+```
+
+이는 고차 함수를 정의할 때도 유용하다. this로 사용할 객체를 `thisArg`와 같은 인자로 받아서 `call`을 사용하면 된다. 이렇게 하면 f가 다른 객체의 메서드일지라도 해당 객체를 `thisArg`로 지정하여 호출할 수 있다.
+
+```js
+function mapper(f, thisArg){
+  var result = [], i;
+  for(i=0; i<this.length; i++){
+    // 대충 f의 형식대로 호출
+    result[i] = f.call(thisArg, this[i], arg1, ...);
+  }
+  return result;
+}
+```
+
+객체에 존재하지 않을 수도 있는 메서드 호출을 위해 사용
+콜백을 위한 this를 함께 받는 고차 함수를 위해 사용
+
+- 아이템 21. apply 메서드를 사용하라
+
+`apply` 메서드는 `call`과 비슷하지만 배열을 인수로 받는다. 이는 인자 배열을 받아서 배열 각 요소가 인자인 것처럼 함수를 호출하므로 가변 인자 함수를 호출할 때 유용하다. 인자의 개수에 상관없이 다 배열에 넣어서 호출하면 되기 때문이다.
+
+또한 `apply`는 첫번째 인자로 this로 사용할 객체도 받는다. 그런 객체가 없을 경우 `null`을 첫번째 인수로 넘겨주면 된다.
+
+```js
+var result = f.apply(thisObj, [arg1, arg2, ...]);
+```
+
+- 아이템 22. 가변 인자 함수를 생성하기 위해 arguments를 사용하라
+
+가변 인자 함수를 만들 땐 JS가 모든 함수에 arguments 유사 배열 객체를 제공한다. 이 객체는 함수에 전달된 모든 인자를 담고 있으며, 함수 내부에서 사용할 수 있다.
+
+이는 length 객체와 인덱싱을 지원한다. 유사 배열 객체라 배열 메서드는 쓸 수 없다.
+
+암튼 `arguments`는 함수에 전달된 모든 인자를 담고 있으므로 이를 이용해 가변 인자 함수를 만든다.
+
+가변 인자 함수를 만들 땐 명시적인 배열도 받을 수 있게 항상 고정 인자 버전을 함께 제공하는 게 좋다. 가변 인자 함수의 arguments를 고정 인자 함수에 위임하는 래퍼를 작성하면 된다.
+
+```js
+function average(){
+  // 1개의 인자를 받는 고정 인자 함수에 위임
+  return averageOfArray(arguments);
+}
+```
+
+- 아이템 23. 절대 arguments 객체를 수정하지 마라
+
+arguments 객체는 유사 배열 객체다. 물론 call을 통해 배열 메서드를 가져와 사용할수는 있다. 그럼 이렇게 arguments 객체를 수정하면 어떻게 될까? shift 메서드를 빌려와 arguments를 수정하고 메서드를 호출하는 것이다.
+
+```js
+function callMethod(obj, method){
+  var shift = [].shift;
+  // arguments에서 obj, method를 뺀다
+  shift.call(arguments);
+  shift.call(arguments);
+  console.log(arguments);
+  return obj[method].apply(obj, arguments);
+}
+
+// 이렇게 쓰기를 원함
+callMethod(obj, "method", arg1, arg2, ...);
+
+var obj={
+  add: function(x, y){
+    return x+y;
+  }
+}
+
+callMethod(obj, "add", 17, 25);
+// Uncaught TypeError: Cannot read properties of undefined (reading 'apply')
+```
+
+이런 에러가 발생하는 건 arguments 객체가 함수의 arguments의 복사본이 아니고 그 자체이며, 이름이 지정된 인자는 arguments 객체에서 상응하는 인덱스들의 별명이기 때문이다. 예를 들어 `obj`는 `arguments[0]`의 별명, `method`는 `arguments[1]`의 별명이다. 이는 shift로 arguments가 수정된 후에도 마찬가지다.
+
+따라서 위의 `callMethod`에서 `obj[method]`를 호출하는 시점에서 `arguments`는 이미 수정되어 있고 `arguments[0] ( === obj)`는 17, `arguments[1] ( === method)`는 25가 되어 있다. 따라서 위 callMethod는 `17[25].apply(17, 25)`를 호출하게 된다.
+
+이러면 17은 Number 객체가 되고 `Number[25]`는 undefined가 되고 undefined의 apply 메서드를 호출하려고 하니 에러가 발생한다.
+
+따라서 arguments 객체와 이름이 지정된 함수 인자 간의 관계가 매우 불안정함을 알고 있어야 한다. arguments 를 수정하면 이름이 지정된 파라미터의 값이 달라질 수 있다.
+
+[이는 엄격 모드에서 어느 정도 수정되었다.](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Strict_mode#eval_%EA%B3%BC_arguments_%EB%A5%BC_%EB%8D%94_%EA%B0%84%EB%8B%A8%ED%95%98%EA%B2%8C_%ED%95%98%EA%B8%B0)
+
+엄격 모드에선 arguments 객체가 함수가 호출되는 시점에 원본 인수들을 저장한다. `arguments[i]`는 이름이 붙은 인자의 값을 추적하지 않으며 이름이 붙은 인자도 상응하는 `arguments[i]`값을 추적하지 않는다. 원래는 둘이 연동되어 있었다...
+
+처음에 arguments 객체 요소들을 진짜 배열로 복사(call + slice 이용)한 후 사용하면 안전하다.
+
+```js
+function callMethod(obj, method){
+  // arguments를 복사하고 앞 2개의 인자들을 제거한 배열 만들기
+  var args = [].slice.call(arguments, 2);
+  // args는 obj, method 다음에 오는 인자들만 담고 있다
+  return obj[method].apply(obj, args);
+}
+
+var obj={
+  add: function(x, y){
+    return x+y;
+  }
+}
+
+callMethod(obj, "add", 17, 25); // 42
+```
+
+## 2024.08.29
+
+- 아이템 24. 변수를 사용해 arguments의 참조를 저장하라
+
+만약 함수에서 특정 함수를 만들어서 반환한다면 arguments 객체를 쓸 때 조심해야 한다. 함수에서 생성하는 함수 또한 그 자신의 인수로 arguments 객체를 갖기 때문이다.
+
+이를 해결하기 위해서는 우리가 사용하고자 하는 arguments 객체를 지역 변수에 저장하고 그 변수를 사용하면 된다. 함수의 포함 관계에 주의해야 한다.
+
+- 아이템 25. bind를 사용하라
+
+객체 메서드를 콜백으로 전달하려 할 때는 this에 대한 주의가 필요하다. this는 함수가 어떻게 호출되는지에 따라 결정되기 때문이다.
+
+다음과 같이 forEach에 객체 메서드 `buffer.add`를 전달하면 `this`는 `buffer`가 아니라 forEach의 디폴트 `this`인 전역 객체 `window`가 된다.
+
+```js
+var buffer = {
+  entries: [],
+  add: function(s){
+    console.log(this);
+    this.entries.push(s);
+  },
+  concat: function(){
+    return this.entries.join("");
+  }
+};
+
+var source = ["867", "-", "5309"];
+source.forEach(buffer.add);
+```
+
+물론 forEach는 thisArg 인수를 제공한다. 하지만 그렇게 않을 경우 지역 함수를 만들거나 bind를 쓸 수 있다.
+
+```js
+// 방법 1
+source.forEach(function(s){
+  buffer.add(s);
+});
+
+// 방법 2
+// this가 buffer로 고정된 새로운 함수를 만들어서 전달
+// 기존 함수를 수정하는 게 아니다
+source.forEach(buffer.add.bind(buffer));
+
+// bind가 새로운 함수를 만들어서 반환한다는 것을 알 수 있다
+// 따라서 어떤 메서드에 대해 bind를 호출하더라도 원본 메서드는 그대로 유지된다
+buffer.add === buffer.add.bind(buffer); // false
+```
+
+- 아이템 26. 커링에 bind 사용하기
+
+함수 bind 메서드는 this 객체를 고정할 뿐 아니라 함수들의 인수도 고정한 새로운 함수를 만들 수 있다. 이를 이용하면 커링을 쉽게 할 수 있다. `foo` 함수의 첫 번째 인자를 1로 고정한 함수를 만들고 싶다면 다음과 같이 하면 된다.
+
+```js
+var foo = function(a, b){
+  return a+b;
+};
+
+var bar = foo.bind(null, 1);
+```
+
+이때 `foo`는 this를 사용하지 않기 때문에 this값으로 `null`을 넘겼다. 이렇게 this를 쓰지 않을 경우에도 bind에 this값을 전달하기는 해야 하기 때문에 관례적으로 null이나 undefined를 넘긴다.
+
+이렇게 함수를 그 인자의 부분집합으로 호출하도록 하는 것을 커링이라고 한다. 이는 함수형 프로그래밍에서 매우 중요한 개념이다.
+
+- 아이템 27. 코드 캡슐화를 위해 문자열보다 클로저를 사용하라
+
+문자열 안에서 실행되는 모든 변수 참조는 eval에 의해 전역 변수로 해석된다. 때문에 함수 안에서 eval을 평가하게 될 경우에도 그 함수의 스코프가 아닌 전역 스코프에서 변수를 찾게 된다.
+
+그러니 문자열을 eval해서 실행하는 식으로 함수를 작성하기보다는 콜백 함수를 사용하자. 이는 클로저를 사용하는 것과 같다.
+
+```js
+function repeat(n, action){
+  for(var i=0; i<n; i++){
+    action();
+  }
+}
+```
+
+또한 eval을 사용시 이런 스코프의 문제뿐 아니라 컴파일러가 최적화를 할 수 없게 되어 성능에도 영향을 미친다는 문제도 있다.
+
+즉 문자열을 전달받아 eval하는 대신 함수를 전달받아 실행하도록 코드를 짜는 게 좋다.
+
