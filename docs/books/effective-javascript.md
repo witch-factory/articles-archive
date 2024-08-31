@@ -798,3 +798,30 @@ function repeat(n, action){
 
 즉 문자열을 전달받아 eval하는 대신 함수를 전달받아 실행하도록 코드를 짜는 게 좋다.
 
+## 20240831
+
+- 아이템 28. 함수 toString 메서드에 의존하지 마라
+
+함수는 toString 메서드로 내용을 볼 수 있을 때가 있다. 이는 함수를 디버깅할 때 유용할 수 있다.
+
+```js
+function add(a, b){
+  return a+b;
+}
+
+add.toString(); // 'function add(a, b){\n  return a+b;\n}'
+```
+
+하지만 js 표준은 함수의 문자열 표현을 정확히 규정하지 않았다. 심지어 함수의 내용이 아닌 문자열을 만들어 낼 수도 있다. 따라서 이를 의존하는 것은 좋지 않다.
+
+가령 bind 메서드는 함수를 반환하는데 이 함수의 toString 메서드는 원본 함수의 내용을 반환하지 않는다.
+
+```js
+function add(a, b){
+  return a+b;
+}
+
+var plus = add.bind(null, 1);
+
+plus.toString(); // 'function () { [native code] }'
+```
