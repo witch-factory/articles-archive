@@ -872,3 +872,88 @@ C.prototype은 C 생성자로 생성한 객체의 프로토타입이다.
 `Object.getPrototypeOf(obj)`는 obj의 프로토타입 객체를 가져오기 위한 ES5 메서드이다.
 `obj.__proto__`는 obj의 프로토타입 객체를 가져올 수 있는 비표준, 하지만 대부분의 환경에서 구현하는 프로퍼티이다.
 
+## 2024.09.03
+
+- 아이템 31. `__proto__`보다 `Object.getPrototypeOf`를 사용하라
+
+`__proto__`는 비표준이다. 대부분의 환경에서 구현되어 있기는 하지만 환경마다 동작이 미묘하게 다를 수 있다.
+
+따라서 `Object.getPrototypeOf`를 사용하는 게 좋다. 없다면 polyfill을 만들어서, ES5 이전 환경에서는 `__proto__`를 사용하고 ES5 이상에서는 `Object.getPrototypeOf`를 사용하도록 하는 것도 좋다.
+
+```js
+if (typeof Object.getPrototypeOf === "undefined") {
+  Object.getPrototypeOf = function (obj) {
+    var t = typeof obj;
+    if (!obj || (t !== "object" && t !== "function")) {
+      throw new TypeError("not an object");
+    }
+    return obj.__proto__;
+  };
+}
+```
+
+- 아이템 32. `__proto__`를 절대 수정하지 마라
+
+모든 플랫폼이 프로토티입 수정을 지원하지는 않기 때문에 `__proto__`를 수정하는 코드를 짜면 이식성이 안 좋아진다.
+
+그리고 JS 엔진은 프로퍼티를 가져오거나 설정하는 동작을 고도로 최적화해 놓는데 `__proto__`를 수정하면 이 최적화를 방해한다.
+
+또한 `__proto__`의 수정은 상속 체계 전체를 바꾸는 것이므로 코드를 이해하고 예측 가능하기 어렵게 만든다. 임의의 프로토타입을 갖는 객체를 만들기 위해서는 `Object.create`를 사용하자. ES5 이전 환경에서는 polyfill을 사용하자.
+
+이렇게 지역 생성자를 만들고 new로 초기화하는 방식으로 비슷하게 구현할 수 있다.
+
+```js
+if (typeof Object.create === "undefined") {
+  Object.create = function (prototype) {
+    function C() {}
+    C.prototype = prototype;
+    return new C();
+  };
+}
+```
+
+다만 진짜 `Object.create`는 새로운 객체에 정의하기 위한 프로퍼티들의 모음을 2번째 인자로 받는다. 위 버전은 1번째 인자만 받는다.
+
+
+- 아이템 33. 생성자가 new와 관계없이 동작하게 하라
+
+ES5 엄격 모드에선 전역 함수의 this를 알아서 undefined로 처리
+
+암튼 생성자 함수가 new 없이 호출되는 경우는 조용히 오작동하거나 버그를 일으키거나, 어쨌든 불안정하다. 때문에 new 없이 호출되었을 때도 제대로 생성자로 동작하게 만드는 게 좋다. 이렇게 `this`가 User의 적절한 인스턴스인지 확인하는 걸 통해 가능하다.
+
+```js
+function User(name, password){
+  if(!(this instanceof User)){
+    return new User(name, password);
+  }
+  this.name = name;
+  this.password = password;
+}
+```
+
+이렇게 하면 new 없이 호출되었을 때도 생성자처럼 동작한다.
+
+약간의 단점은 추가적인 함수 호출이 필요하다는 점이다. 또 가변 인자 함수를 만들기도 어렵다. 가변 인자 함수 호출을 위한 apply 메서드를 위한 유사한 게 없기 때문이다.
+
+`Object.create`를 쓸 수도 있다.
+
+```js
+// JS는 생성자 함수 내에서 명시적으로 return을 호출할 경우 new 표현식의 결과를
+// return값이 오버라이딩하도록 허용한다.
+// 따라서 이 User를 new로 호출할 시에도 self가 의도대로 반환된다.
+function User(name, password){
+  var self = this instanceof User ? this : Object.create(User.prototype);
+  self.name = name;
+  self.password = password;
+  return self;
+}
+```
+
+`Object.create`가 없는 환경이라면 위에 있는 간단한 폴리필을 쓸 수도 있다.
+
+물론 이렇게 하는 게 늘 좋은 건 아니다. 아무튼 생성자가 new 없이 호출되는 경우를 대비해야 한다. 최소한, 함수가 new로 호출되길 원한다면 명백하게 문서화해야 한다.
+
+- 아이템 34. 메서드를 프로토타입에 저장하라
+
+메서드는 프로토타입에 저장하는 게 좋다. 이렇게 하면 메서드 함수가 매번 생성되지 않아 메모리 사용량을 줄일 수 있고, 메서드를 공유할 수 있으며, 프로토타입을 통해 메서드를 동적으로 바꿀 수도 있다.
+
