@@ -953,7 +953,91 @@ function User(name, password){
 
 물론 이렇게 하는 게 늘 좋은 건 아니다. 아무튼 생성자가 new 없이 호출되는 경우를 대비해야 한다. 최소한, 함수가 new로 호출되길 원한다면 명백하게 문서화해야 한다.
 
+## 2024.09.04
+
 - 아이템 34. 메서드를 프로토타입에 저장하라
 
-메서드는 프로토타입에 저장하는 게 좋다. 이렇게 하면 메서드 함수가 매번 생성되지 않아 메모리 사용량을 줄일 수 있고, 메서드를 공유할 수 있으며, 프로토타입을 통해 메서드를 동적으로 바꿀 수도 있다.
+메서드는 프로토타입에 저장하는 게 좋다. 이렇게 하면 메서드 함수가 매번 생성되지 않아 메모리 사용량을 줄일 수 있고, 인스턴스 간에 메서드를 공유할 수 있으며, 프로토타입을 통해 메서드를 동적으로 바꿀 수도 있다.
 
+인스턴스 객체에 메서드를 저장하면 메서드를 찾기 위해 프로토타입 체인을 탐색할 필요가 없기 때문에 성능상 이점이 있다고 생각할 수도 있지만 일반적으로 JS 엔진에서 프로토타입 탐색을 최적화하기 때문에 이점이 크지 않다.
+
+따라서 메모리 면에서 거의 확실한 이점이 있는 "프로토타입에 메서드를 저장"하는 게 좋다.
+
+- 아이템 35. 비공개 데이터 저장을 위해 클로저를 사용하라
+
+클로저는 내포한 변수에 데이터를 저장하고 해당 데이터에 대한 직접적인 접근을 제공하지 않는다. 클로저에 접근할 수 있는 유일한 방법은 함수에서 제공하는 클로저의 접근 방법을 사용하는 것 뿐이다.
+
+데이터를 객체 프로퍼티로 저장하는 대신 생성자 내의 변수로 저장하고, 메서드를 이 변수를 참조하는 클로저로 바꾸는 것이다.
+
+```js
+function User(name, password) {
+  this.getName = function () {
+    return name;
+  };
+  this.getPassword = function () {
+    return password;
+  };
+}
+```
+
+이 생성자의 인스턴스는 어떤 프로퍼티도 갖지 않으므로 외부 코드는 `User`인스턴스의 name, password에 직접 접근할 수 없다. 단 이렇게 하려면 메서드가 인스턴스 객체에 존재해야 하고(클로저를 이용해야 하므로 생성자 변수가 메서드 스코프 내에 있어야 하기 때문에) 따라서 메서드가 인스턴스마다 생성되어야 한다. 메모리 사용량이 늘어날 것이다. 물론 정보 은닉 보장이 중요하다면 충분히 할 수 있는 선택이다.
+
+- 아이템 36. 인스턴스 상태는 인스턴스 객체에만 저장하라
+
+인스턴스 상태는 인스턴스 객체에만 저장해야 한다. 프로토타입에 저장하면 인스턴스 간에 상태가 공유되어 의도하지 않은 결과가 나올 수 있다.
+
+따라서 인스턴스마다 달라져야 하는 상태 값인지 생각하고 프로토타입에 저장할지 인스턴스 객체에 저장할지 결정하자. 보통 상태는 인스턴스에 저장하고 메서드는 프로토타입에 저장하는 게 일반적이다. 물론 정말로 공유할 의도라면 원칙적으로 상태를 프로토타입에 저장할 수는 있다.
+
+- 아이템 37. this의 명시적인 바인딩에 대해 이해하라
+
+다음 코드는 문자열을 받아 읽어주는 메서드를 가진 Reader 생성자를 정의한다. 그런데 여기에는 문제가 있는데, `lines.map`에 전달된 콜백 내부에서 this가 Reader 인스턴스가 아니라 전역 객체를 참조한다는 것이다. 따라서 `this.separators`는 undefined가 되어 버린다.
+
+```js
+function Reader(separators) {
+  this.separators = separators || [",", "."];
+}
+
+Reader.prototype.read = function (str) {
+  var lines = str.trim().split("\n");
+  return lines.map(function(line){
+    return line.split(this.separators);
+  });
+};
+
+var reader = new Reader(["."]);
+reader.read("a.b\nc.d"); // [["a.b"], ["c.d"]]
+```
+
+this는 가장 가까이에서 둘러싸고 있는 함수의 호출에 따라 명시적으로 바인딩된다는 걸 기억하자. 물론 `map`은 2번째 인자로 thisArg를 받아서 this를 지정할 수 있다.
+
+```js
+function Reader(separators) {
+  this.separators = separators || [",", "."];
+}
+
+Reader.prototype.read = function (str) {
+  var lines = str.trim().split("\n");
+  return lines.map(function(line){
+    return line.split(this.separators);
+  }, this);
+};
+
+var reader = new Reader(["."]);
+reader.read("a.b\nc.d"); // [["a", "b"], ["c", "d"]]
+```
+
+만약 thisArg를 사용하지 않는 콜백 API에서 같은 일을 해야 한다면, 콜백이 계속해서 참조할 수 있도록 외부 함수의 this를 변수에 저장하고 그 변수를 참조하도록 하자. 아래서 사용한 `self` 혹은 `that`등이 흔히 변수명으로 사용된다.
+
+```js
+Reader.prototype.read = function (str) {
+  // self 변수로 외부 this 바인딩 참조를 저장
+  var self = this;
+  var lines = str.trim().split("\n");
+  return lines.map(function(line){
+    // 외부의 this 사용
+    return line.split(self.separators);
+  });
+};
+```
+
+혹은 ES5 이상 환경이라면 콜백 함수에 `bind`를 써서 this를 지정해 줄 수도 있다.
