@@ -1140,3 +1140,84 @@ JS 객체 : 문자열 프로퍼티 이름을 값으로 매핑하는 테이블. `
 
 물론 이렇게 객체 리터럴을 가볍게 딕셔너리로 쓰는 것도 위험성이 있는데 이는 다음 아이템에서 다룬다.
 
+## 2024.09.07
+
+- 아이템 44. 프로토타입 오염을 막기 위해 null 프로토타입을 사용하라
+
+ES5 이전에는 빈 프로토타입을 가진 객체를 만드는 방법이 없었다. 생성자 prototype을 null로 설정해도 여전히 `Object.prototype`을 상속받았다.
+
+ES5에서는 `Object.create`를 이용해 프로토타입을 null로 설정할 수 있다.
+
+```js
+// 프로토타입이 null인 객체 생성. 2번째 인수로 새 객체 프로퍼티를 추가할 수도 있다.
+var x = Object.create(null);
+Object.getPrototypeOf(x) === null; // true
+```
+
+오래된 환경에선 객체 리터럴과 `__proto__`를 이용해 프로토타입 없는 객체를 만들 수 있다.
+
+```js
+var x = {__proto__: null};
+```
+
+`__proto__`는 비표준이므로 웬만하면 `Object.create(null)`을 사용하자. 그리고 `__proto__`는 보통 특별하게 취급되므로 절대 프로퍼티 이름으로 사용하면 안된다.
+
+- 아이템 45. 프로토타입 오염을 막기 위해 hasOwnProperty를 사용하라
+
+특정 프로퍼티가 진짜로 객체에 속해 있는지를 알기 위해 `hasOwnProperty`를 사용할 수 있다. 그런데 객체에 `"hasOwnProperty"`라는 프로퍼티가 있을 경우 이 메서드를 호출할 때 문제가 생길 수 있다. 따라서 `Object.prototype.hasOwnProperty`를 직접 호출하는 것을 고려할 수 있다.
+
+```js
+var x = {hasOwnProperty: "foo"};
+// x.hasOwnProperty("foo"); // TypeError: x.hasOwnProperty is not a function
+// 따라서 Object.prototype의 hasOwnProperty를 call을 통해 호출
+Object.prototype.hasOwnProperty.call(x, "foo"); // false
+```
+
+견고한 딕셔너리 생성자. `__proto__`라는 프로퍼티가 영원히 모든 객체를 오염시킬 때 이를 막기 위한 조치까지 들어가 있다. `Object.create(null)`로 객체를 만들어도 `__proto__`가 객체에 들어 있는 걸로 처리되는 환경도 있기 때문이다. 따라서 `dict.has("__proto__")`가 false가 나오는 것이 보장되도록 하였다.
+
+```js
+function Dict(elements){
+  // 부가적인 초기 프로퍼티들 허용
+  this.elements = elements || {};
+  this.hasSpecialProto = false; // __proto__ 프로퍼티가 있는지 여부
+  this.specialProto = undefined; // __proto__ 프로퍼티 값
+}
+
+Dict.prototype.has = function(key){
+  if(key === "__proto__"){
+    return this.hasSpecialProto;
+  }
+  // hasOwnProperty를 사용해 프로퍼티가 직접적으로 소유되었는지 확인
+  return Object.prototype.hasOwnProperty.call(this.elements, key);
+};
+
+Dict.prototype.get = function(key){
+  if(key === "__proto__"){
+    return this.specialProto;
+  }
+  return this.has(key) ? this.elements[key] : undefined;
+};
+
+Dict.prototype.set = function(key, val){
+  if(key === "__proto__"){
+    this.hasSpecialProto = true;
+    this.specialProto = val;
+  } else {
+    // 키를 이렇게 추가할 시 Object.prototype에 같은 이름의 프로퍼티가 있어도 객체 프로퍼티 중 하나로 추가된다.
+    this.elements[key] = val;
+  }
+};
+
+Dict.prototype.remove = function(key){
+  if(key === "__proto__"){
+    this.hasSpecialProto = false;
+    this.specialProto = undefined;
+  } else {
+    delete this.elements[key];
+  }
+};
+```
+
+- 아이템 46. 순서가 정해진 컬렉션에는 딕셔너리 대신 배열을 사용하라
+
+ECMAScript 표준은 프로퍼티 저장 순서에 대한 어떤 보장도 없다. 따라서 순서가 중요할 경우 배열을 사용하는 게 좋다. 또한 객체에 `for..in` 반복문을 사용할 땐 수행하는 연산이 순서에 상관없이 동작하는지 항상 주의하자.
