@@ -1221,3 +1221,26 @@ Dict.prototype.remove = function(key){
 - 아이템 46. 순서가 정해진 컬렉션에는 딕셔너리 대신 배열을 사용하라
 
 ECMAScript 표준은 프로퍼티 저장 순서에 대한 어떤 보장도 없다. 따라서 순서가 중요할 경우 배열을 사용하는 게 좋다. 또한 객체에 `for..in` 반복문을 사용할 땐 수행하는 연산이 순서에 상관없이 동작하는지 항상 주의하자.
+
+- 아이템 47. Object.prototype에 열거 가능한 프로퍼티를 절대 추가하지 마라
+
+`Object.prototype`에 프로퍼티를 추가하면 모든 객체에 영향을 미친다. 그러면 `for..in` 반복문이나 `Object.keys` 같은 메서드가 이 프로퍼티를 반환하게 된다.
+
+혹은 ES5에서 나온 `Object.defineProperty`를 사용해 프로퍼티를 추가할 때 `enumerable`을 false로 설정할 수도 있다. 이러면 새로 추가된 프로퍼티(메서드)는 `for..in` 등의 열거에 나타나지 않는다.
+
+```js
+Object.defineProperty(Object.prototype, "newMethod", {
+  value: function () {
+    // 새 메서드
+  },
+  enumerable: false,
+  writable: true,
+  configurable: true
+});
+```
+
+- 아이템 48. 열거하는 동안 객체를 수정하지 마라
+
+ECMAScript 표준은 객체 열거 도중 추가된 프로퍼티에 대해서, 새롭게 추가된 프로퍼티가 현재 열거에 포함됨을 보장하지 않는다. 데이터 구조가 변경될 수도 있는 열거에는 딕셔너리 대신 배열을 사용하는 게 좋다.
+
+- 아이템 49. 배열 반복에 for..in 대신 for 반복문을 사용하라
