@@ -1417,3 +1417,48 @@ function isArray(value){
 이런 식으로 진짜 배열이 인수로 오는 게 기대되는 함수에 유사 배열 객체를 사용하려면 `slice`를 이용해 진짜 배열로 만들어 줘야 한다.
 
 API를 만들 때 유사 배열 객체를 받는지 진짜 배열을 받는지 문서화해야 한다.
+
+## 2024.09.13
+
+- 아이템 59. 과도한 강제 형변환을 피하라
+
+함수에서 강제 형변환을 시행하는 대신 `guard` 등을 이용해서 인자의 타입을 검사하고 그에 맞는 동작을 수행하도록 하자. 이렇게 하면 함수가 더 유연해지고 예상치 못한 타입이 들어왔을 때 예외를 던지도록 할 수 있다. guard 메서드를 포함하는 객체는 이런 식이다.
+
+```js
+var guard = {
+  guard: function(x) {
+    if(!this.test(x)){
+      throw new TypeError("Expected "+this);
+    }
+  }
+}
+
+// 각 guard 객체는 test 메서드와 설명 문자열 가짐
+var uint32 = Object.create(guard);
+uint32.test = function(x){
+  // `>>>`은 부호 없는 쉬프트 연산자로 인자를 32비트 부호 없는 정수로 변환한다.
+  // 따라서 이런 비교는 unsigned 32비트 정수인지 확인하게 해준다.
+  return typeof x === "number" && x === (x >>> 0);
+};
+uint32.toString = function(){
+  return "uint32
+};
+
+var arrayLike = Object.create(guard);
+arrayLike.test = function(x){
+  // unsigned 정수형 length를 가져야 한다
+  return typeof x === "object" && x && uint32.test(x.length);
+};
+arrayLike.toString = function(){
+  return "array-like object";
+};
+```
+
+이런 guard를 통해 추가적인 확인을 하고 오류를 방어하는 방어적인 프로그래밍은 버그를 찾기 쉽게 만들고 디버깅도 쉽게 만든다. 그러나 모든 잠재적인 버그를 방어하기란 불가능하고, 성능에도 영향을 끼칠 수 있으므로 이런 방어적 프로그래밍은 비용과의 균형을 맞춰야 한다.
+
+- 아이템 60. 메서드 체이닝을 지원하라
+
+string replace 메서드처럼, 무상태 API는 메서드 체이닝을 이용해서 더 간결하게 로직을 작성할 수 있다. 이전 결과에 반복적으로 api를 호출하는 것이다. 이렇게 체이닝을 지원하려면 메서드가 동일한 인터페이스 객체를 또다시 생성하도록 해야 한다. 또는 객체 상태를 유지시키고 싶다면 `this`를 반환하게 할 수도 있다.
+
+# 7장. 동시성
+
