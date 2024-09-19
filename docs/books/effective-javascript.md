@@ -1602,3 +1602,67 @@ function downloadFiles(url, file){
 ```
 
 이렇게 콜백을 감싸고 이름짓는 것을 넘어 promise API를 쓸 수도 있다.
+
+## 2024.09.19
+
+- 아이템 63. 오류를 놓치지 않도록 조심하라
+
+이 책은 async await은 커녕 promise도 없던 시절 책이다. 이때는 try-catch 구문을 비동기에 전혀 사용할 수 없었다. 애초에 비동기 에러가 발생했을 때 예외를 처리할 실행 컨텍스트가 없었다. 대신 비동기 API는 콜백의 특수 인자 혹은 에러 처리 콜백(errorback)을 받아들였다. 예를 들어 download 함수는 다음과 같이 사용했다.
+
+```js
+download("file.txt", function(text){
+  console.log(text);
+}, function(error){
+  // errorback function
+  console.error("Error: "+error);
+});
+```
+
+다른 스타일로는 하나의 콜백을 받아서 하는 방법이 있다. nodejs 덕에 유명해졌다고 한다. 첫번째 인자는 에러, 두번째 인자는 결과값이다.
+
+```js
+download("a.txt", function(error, a){
+  if(error) return onError(error);
+  // a를 사용
+  download("b.txt", function(error, b){
+    if(error) return onError(error);
+    // b를 사용
+    download("c.txt", function(error, c){
+      if(error) return onError(error);
+      // c를 사용
+      // ...
+    });
+  });
+});
+```
+
+비동기 api를 디버깅하는 건 try..catch를 쓰는 것보다 더 어렵다. try catch를 사용하면 모든 오류를 잡아내는 로직을 정의하기 쉽고 따라서 오류 처리를 잘 잊지 않게 된다.
+
+하지만 비동기 API는 실행 단계 어디서든 오류 처리를 놓치기 쉽고 따라서 오류가 조용히 무시되기 쉽다. 이런 오류는 디버깅하기 어렵다. 따라서 비동기 API를 사용할 때는 모든 단계에서 오류 조건을 명시적으로 처리하는지 항상 주의해야 한다.
+
+- 아이템 64. 비동기 반복문을 위해 재귀를 사용하라
+
+URL 배열을 받아서 순서대로(하나가 끝나면 다음으로) 다운로드하는 함수를 가정해보자. 다운로드는 비동기로 동작하므로 이를 일반적인 반복문으로 구현하기는 쉽지 않다.
+
+그래서 재귀적으로 함수를 정의하여, 다운로드가 끝났을 때 다음 다운로드를 명시적으로 시작하도록 할 수 있다.
+
+```js
+function downloadURLs(urls, onSuccess, onFailure){
+  var len=urls.length;
+  function tryNextURL(i){
+    if(i===len){
+      onSuccess();
+    } else {
+      download(urls[i], function(){
+        // 성공시 다음 다운로드 시작
+        tryNextURL(i+1);
+      }, function(error){
+        onFailure(error, urls[i]);
+      });
+    }
+  }
+  tryNextURL(0);
+}
+```
+
+혹시 이런 재귀가 너무 깊어져서 스택 오버플로우를 일으키지 않을까 생각할 수 있다. 하지만 tryNextURL은 자신의 콜백 함수가 실행되기 전에 리턴되고 콜스택에서 제거된다. 또한 콜백 함수는 콜스택이 비어 있을 때만 이벤트 루프에서 콜스택으로 이동하기 때문에 이런 비동기 재귀는 깊은 콜스택을 만들지 않는다.
