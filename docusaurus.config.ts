@@ -71,9 +71,9 @@ const config: Config = {
         },
         {
           type: "docSidebar",
-          sidebarId: "translationSidebar",
+          sidebarId: "TILSidebar",
           position: "left",
-          label: "Translations",
+          label: "TIL",
         },
         {
           type: "docSidebar",
@@ -99,8 +99,8 @@ const config: Config = {
               to: "/docs/articles",
             },
             {
-              label: "Translations",
-              to: "/docs/translations",
+              label: "TIL",
+              to: "/docs/TIL",
             },
             {
               label: "Books",
