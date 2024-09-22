@@ -1666,3 +1666,100 @@ function downloadURLs(urls, onSuccess, onFailure){
 ```
 
 혹시 이런 재귀가 너무 깊어져서 스택 오버플로우를 일으키지 않을까 생각할 수 있다. 하지만 tryNextURL은 자신의 콜백 함수가 실행되기 전에 리턴되고 콜스택에서 제거된다. 또한 콜백 함수는 콜스택이 비어 있을 때만 이벤트 루프에서 콜스택으로 이동하기 때문에 이런 비동기 재귀는 깊은 콜스택을 만들지 않는다.
+
+## 2024.09.22
+
+- 아이템 65. 계산 중 이벤트 큐를 블로킹하지 마라
+
+클라이언트의 사용자 요청에 반응하기 위해 또는 서버 요청 처리 등을 위해 이벤트 루프의 개별 턴을 짧게 유지하는 건 매우 중요하다. 값비싼 연산을 수행해야 할 때는 이런 방법을 쓸 수 있다.
+
+1. 워커 API 사용(앱과는 메시지-`postMessage`를 통해 통신)
+2. 알고리즘이 처리 가능한 작업 단위로 구성되도록 단계로 쪼갠다
+
+예를 들어 이렇게 함수의 동작을 쪼개고 `setTimeout`을 이용해 다음 턴에 실행되도록 할 수 있다. 다음과 같이 하면 이벤트 루프의 각 턴마다 작은 단계만 실행되도록 할 수 있고 단계가 끝날 때마다 다음 단계를 이벤트 큐에 삽입한다. 따라서 다른 작업이 블로킹되지 않는다.
+
+```js
+Member.prototype.inNetwork = function(other, callback) {
+  var visited = {};
+  var worklist = [this];
+  function next(){
+    if (worklist.length === 0) {
+      callback(false);
+      return;
+    }
+    var member = worklist.pop();
+    // 다른 코드
+    if (member === other) { // 멤버를 찾았다
+      callback(true);
+      return;
+    }
+    // ...
+    setTimeout(next, 0); // 다음 이터레이션 스케줄링
+  }
+  setTimeout(next, 0); // next를 스케줄링
+}
+```
+
+- 아이템 66. 동시성 연산을 수행하기 위해 카운터를 사용하라
+
+다운로드된 결과의 배열 순서를 보장하고, 대기중인 게 없을 때만 함수를 종료시키기 위해 카운터를 사용할 수 있다. 카운터를 사용하면 결과의 순서가 보장되지 않는 race condition을 피하고 믿을 수 있는 순서의 결과를 얻을 수 있다.
+
+- 아이템 67. 비동기 콜백을 절대 동기적으로 호출하지 마라
+
+비동기 콜백은 이벤트 루프의 구분된 턴에서 호출되어야 한다. 그런데 이런 비동기 콜백이 동기적으로 호출되게 되면, 이벤트 루프의 별도의 턴에 실행되어야 할 코드가 현재 턴에서 실행되어 의도치 않은 동작을 할 수 있다. 예를 들어 파일이 캐시에 있으면 그대로 사용하고 그렇지 않으면 URL에서 파일을 다운로드하는 함수를 가정해보자.
+
+```js
+function downloadAsyncWithCache(url, onsuccess, onerror){
+  if(cache.has(url)){
+    // 캐시에 있으면 동기적으로 호출
+    onsuccess(cache.get(url));
+    return;
+  }
+  return downloadAsync(url, function(file){
+    cache.set(url, file);
+    onsuccess(file);
+  }, onerror);
+}
+```
+
+이 코드는 `url`이 캐시에 있을 경우 `onsuccess`를 동기적으로 호출한다. 이는 이런 문제를 발생시킬 수 있다.
+
+```js
+downloadAsyncWithCache("target.txt", function(file){
+  console.log("finished"); // 만약 캐시에 url이 있으면 이 코드가 동기적으로, 즉 먼저 실행된다
+});
+console.log("starting");
+```
+
+즉 다운로드를 비롯한 비동기 동작이 완료되고 나서 실행되어야 할 코드가 동기적으로, 다운로드 이전에 실행되는 코드들과 함께 실행되어 버리는 것이다.
+
+이는 메모리 문제도 발생시킨다. 비동기 콜백은 기본적으로 이벤트 루프에서 콜스택이 비어 있을 때 실행시키므로 비동기 반복문을 재귀로 구현하는 건 콜스택 공간을 차지하지 않는다.
+
+그러나 동기적으로 호출된 콜백은 콜스택에 쌓이게 되어 콜스택이 너무 깊어져 스택 오버플로우를 일으킬 수 있다. 표면적으로는 콜백이 비동기적으로 실행되는 것처럼 보이지만 실제로는 동기적으로 실행되어 콜스택을 채우게 되므로 이런 버그를 잡아내기도 어렵다.
+
+콜백이 항상 비동기적으로 실행되도록 보장하기 위해 `setTimeout`을 사용할 수 있다.
+
+```js
+function downloadAsyncWithCache(url, onsuccess, onerror){
+  if(cache.has(url)){
+    // 캐시에 있으면 동기적으로 호출
+    var cached=cache.get(url);
+    setTimeout(onsuccess.bind(null, cached), 0);
+    return;
+  }
+  return downloadAsync(url, function(file){
+    cache.set(url, file);
+    onsuccess(file);
+  }, onerror);
+}
+```
+
+-> 캐시 등으로 데이터가 즉시 사용 가능하더라도 절대 비동기 콜백을 동기적으로 호출하지 말 것
+
+- 아이템 68. 더 깔끔한 비동기 로직을 위해 프라미스를 사용하라
+
+promise는 `then` 메서드로 콜백을 받아들인다. 그리고 이 콜백은 사이드 이펙트를 만들 수 있을 뿐 아니라 반환값을 통해 promise를 만들고 다음 `then`으로 전달할 수 있다. promise의 힘은 이 구성력에 있다.
+
+프로미스는 아직 완료되지 않았을 수도 있는 연산의 최종적인 값을 표현하는 객체라고 생각할 수 있다. then은 최종적인 값의 한 종류를 표현하는 프로미스 객체를 받을 수 있게 해주고 콜백의 반환값은 또다른 최종값을 표현하는 새 프로미스를 생성한다.
+
+프로미스는 동시성 콜백을 통해 데이터를 구조화하는 대신 then 메서드의 결과를 통해 promise들을 구성해 통신한다. 이는 비동기 통신의 결과물을 모을 때 발생할 수 있는 race condition을 피할 수 있게 해준다.
