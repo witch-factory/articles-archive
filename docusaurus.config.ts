@@ -89,30 +89,7 @@ const config: Config = {
       ],
     },
     footer: {
-      style: "dark",
-      links: [
-        {
-          title: "Links",
-          items: [
-            {
-              label: "Articles",
-              to: "/docs/articles",
-            },
-            {
-              label: "TIL",
-              to: "/docs/TIL",
-            },
-            {
-              label: "Books",
-              to: "/docs/books",
-            },
-            {
-              label: "주인장",
-              href: "https://witch.work/",
-            },
-          ],
-        },
-      ],
+      style: "light",
       copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
     },
     prism: {
