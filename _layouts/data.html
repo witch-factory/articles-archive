@@ -1,0 +1,20 @@
+---
+layout: main.html
+---
+
+{% if showSidebar != false %}
+<aside class="sidebar">
+  <ul class="sidebar-list">
+    {% for item in collections.til %}
+      <li>
+        <!-- url을 slug 기반으로 변경하거나 암튼 frontmatter에는 URL이 없으니 처리해야 함 -->
+        <a href="{{ item.url }}">{{ item.data.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</aside>
+{% endif %}
+
+<article class="content">
+  {{ content }}
+</article>

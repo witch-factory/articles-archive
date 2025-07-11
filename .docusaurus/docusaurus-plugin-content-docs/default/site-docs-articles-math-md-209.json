@@ -1,0 +1,28 @@
+{
+  "id": "articles/math",
+  "title": "프로그래밍과 수학에 관한 글",
+  "description": "수학과 프로그래밍 연결에 관한 글들을 저장",
+  "source": "@site/docs/articles/math.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-math",
+  "permalink": "/docs/articles/articles-memo-math",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/math.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-math",
+    "title": "프로그래밍과 수학에 관한 글",
+    "description": "수학과 프로그래밍 연결에 관한 글들을 저장"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "라이브러리에 관한 문서와 글",
+    "permalink": "/docs/articles/articles-memo-library"
+  },
+  "next": {
+    "title": "Next.js에 관한 글",
+    "permalink": "/docs/articles/articles-memo-nextjs"
+  }
+}

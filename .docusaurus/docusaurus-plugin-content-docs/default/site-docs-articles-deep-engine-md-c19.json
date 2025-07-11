@@ -1,0 +1,28 @@
+{
+  "id": "articles/deep-engine",
+  "title": "엔진의 내부 동작을 탐구하기 위한 글들",
+  "description": "JS엔진의 깊은 곳을 탐구하는 글들",
+  "source": "@site/docs/articles/deep-engine.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-deep-engine",
+  "permalink": "/docs/articles/articles-memo-deep-engine",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/deep-engine.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-deep-engine",
+    "title": "엔진의 내부 동작을 탐구하기 위한 글들",
+    "description": "JS엔진의 깊은 곳을 탐구하는 글들"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "CSS에 관한 글",
+    "permalink": "/docs/articles/articles-memo-css"
+  },
+  "next": {
+    "title": "다양한 부분의 깊은 동작을 다룬 글들",
+    "permalink": "/docs/articles/articles-memo-deep-study"
+  }
+}

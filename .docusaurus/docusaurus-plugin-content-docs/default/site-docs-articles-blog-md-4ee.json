@@ -1,0 +1,28 @@
+{
+  "id": "articles/blog",
+  "title": "좋은 블로그들 모음",
+  "description": "좋은 블로그들을 저장",
+  "source": "@site/docs/articles/blog.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-blog",
+  "permalink": "/docs/articles/articles-memo-blog",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/blog.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-blog",
+    "title": "좋은 블로그들 모음",
+    "description": "좋은 블로그들을 저장"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "인덱스 페이지",
+    "permalink": "/docs/articles/"
+  },
+  "next": {
+    "title": "볼 만한 책들 모음",
+    "permalink": "/docs/articles/articles-memo-book"
+  }
+}

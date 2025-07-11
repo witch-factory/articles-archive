@@ -1,0 +1,180 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "articles/index",
+          "docs": [
+            {
+              "id": "articles/blog",
+              "path": "/docs/articles/articles-memo-blog",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/books",
+              "path": "/docs/articles/articles-memo-book",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/css",
+              "path": "/docs/articles/articles-memo-css",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/deep",
+              "path": "/docs/articles/articles-memo-deep-study",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/deep-engine",
+              "path": "/docs/articles/articles-memo-deep-engine",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/feconf",
+              "path": "/docs/articles/feconf",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/index",
+              "path": "/docs/articles/",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/inflearn-test",
+              "path": "/docs/articles/jest-test-lecture",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/javascript",
+              "path": "/docs/articles/articles-memo-javascript",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/library",
+              "path": "/docs/articles/articles-memo-library",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/math",
+              "path": "/docs/articles/articles-memo-math",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/nextjs",
+              "path": "/docs/articles/articles-memo-nextjs",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/react",
+              "path": "/docs/articles/articles-memo-react",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/recollections",
+              "path": "/docs/articles/articles-memo-recollections",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/tech",
+              "path": "/docs/articles/articles-memo-tech",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/typescript",
+              "path": "/docs/articles/articles-memo-typescript",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "articles/web-fundamentals",
+              "path": "/docs/articles/articles-memo-web-fundamentals",
+              "sidebar": "articleSidebar"
+            },
+            {
+              "id": "books/effective-javascript",
+              "path": "/docs/books/effective-javascript",
+              "sidebar": "bookSidebar"
+            },
+            {
+              "id": "books/index",
+              "path": "/docs/books/",
+              "sidebar": "bookSidebar"
+            },
+            {
+              "id": "books/speaking-javascript",
+              "path": "/docs/books/speaking-javascript",
+              "sidebar": "bookSidebar"
+            },
+            {
+              "id": "TIL/20250407 java",
+              "path": "/docs/TIL/20250407 java",
+              "sidebar": "TILSidebar"
+            },
+            {
+              "id": "TIL/java lecture basic",
+              "path": "/docs/TIL/java lecture basic",
+              "sidebar": "TILSidebar"
+            },
+            {
+              "id": "TIL/java lecture intermediate",
+              "path": "/docs/TIL/java lecture intermediate",
+              "sidebar": "TILSidebar"
+            },
+            {
+              "id": "TIL/nest-docs",
+              "path": "/docs/TIL/nest-docs",
+              "sidebar": "TILSidebar"
+            },
+            {
+              "id": "TIL/next-docs",
+              "path": "/docs/TIL/next-docs",
+              "sidebar": "TILSidebar"
+            },
+            {
+              "id": "TIL/react-docs",
+              "path": "/docs/TIL/react-docs-brief",
+              "sidebar": "TILSidebar"
+            },
+            {
+              "id": "TIL/tailwind docs",
+              "path": "/docs/TIL/tailwind docs",
+              "sidebar": "TILSidebar"
+            },
+            {
+              "id": "TIL/TIL 20240921",
+              "path": "/docs/TIL/TIL 20240921",
+              "sidebar": "TILSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "articleSidebar": {
+              "link": {
+                "path": "/docs/articles/",
+                "label": "articles/index"
+              }
+            },
+            "TILSidebar": {
+              "link": {
+                "path": "/docs/TIL/react-docs-brief",
+                "label": "TIL/react-docs"
+              }
+            },
+            "bookSidebar": {
+              "link": {
+                "path": "/docs/books/",
+                "label": "books/index"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

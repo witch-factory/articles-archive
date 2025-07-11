@@ -1,0 +1,25 @@
+{
+  "id": "books/index",
+  "title": "인덱스 페이지",
+  "description": "책을 읽으면서 메모한 것들",
+  "source": "@site/docs/books/index.md",
+  "sourceDirName": "books",
+  "slug": "/books/",
+  "permalink": "/docs/books/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/books/index.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "인덱스 페이지",
+    "description": "책을 읽으면서 메모한 것들"
+  },
+  "sidebar": "bookSidebar",
+  "next": {
+    "title": "이펙티브 자바스크립트",
+    "permalink": "/docs/books/effective-javascript"
+  }
+}

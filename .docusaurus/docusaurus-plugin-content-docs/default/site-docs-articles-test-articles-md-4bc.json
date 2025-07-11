@@ -1,0 +1,24 @@
+{
+  "id": "articles/test-articles",
+  "title": "다른 사람들의 회고",
+  "description": "회고 글들을 저장",
+  "source": "@site/docs/articles/test-articles.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-1",
+  "permalink": "/docs/articles/articles-memo-1",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/test-articles.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-1",
+    "title": "다른 사람들의 회고",
+    "description": "회고 글들을 저장"
+  },
+  "sidebar": "articleSidebar",
+  "next": {
+    "title": "test2",
+    "permalink": "/docs/articles/test2"
+  }
+}

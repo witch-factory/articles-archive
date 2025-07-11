@@ -1,0 +1,28 @@
+{
+  "id": "articles/css",
+  "title": "CSS에 관한 글",
+  "description": "CSS에 관한 좋은 글들을 저장",
+  "source": "@site/docs/articles/css.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-css",
+  "permalink": "/docs/articles/articles-memo-css",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/css.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-css",
+    "title": "CSS에 관한 글",
+    "description": "CSS에 관한 좋은 글들을 저장"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "볼 만한 책들 모음",
+    "permalink": "/docs/articles/articles-memo-book"
+  },
+  "next": {
+    "title": "엔진의 내부 동작을 탐구하기 위한 글들",
+    "permalink": "/docs/articles/articles-memo-deep-engine"
+  }
+}

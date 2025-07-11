@@ -1,0 +1,24 @@
+{
+  "id": "books/speaking-javascript",
+  "title": "자바스크립트를 말하다",
+  "description": "악셀 라우슈마이어의 책 \"자바스크립트를 말하다\"",
+  "source": "@site/docs/books/speaking-javascript.md",
+  "sourceDirName": "books",
+  "slug": "/books/speaking-javascript",
+  "permalink": "/docs/books/speaking-javascript",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/books/speaking-javascript.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "speaking-javascript",
+    "title": "자바스크립트를 말하다",
+    "description": "악셀 라우슈마이어의 책 \"자바스크립트를 말하다\""
+  },
+  "sidebar": "bookSidebar",
+  "previous": {
+    "title": "이펙티브 자바스크립트",
+    "permalink": "/docs/books/effective-javascript"
+  }
+}

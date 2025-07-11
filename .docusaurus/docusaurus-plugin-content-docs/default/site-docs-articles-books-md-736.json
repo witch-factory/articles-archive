@@ -1,0 +1,28 @@
+{
+  "id": "articles/books",
+  "title": "볼 만한 책들 모음",
+  "description": "깃헙 등에 있는 공개된 책들",
+  "source": "@site/docs/articles/books.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-book",
+  "permalink": "/docs/articles/articles-memo-book",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/books.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-book",
+    "title": "볼 만한 책들 모음",
+    "description": "깃헙 등에 있는 공개된 책들"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "좋은 블로그들 모음",
+    "permalink": "/docs/articles/articles-memo-blog"
+  },
+  "next": {
+    "title": "CSS에 관한 글",
+    "permalink": "/docs/articles/articles-memo-css"
+  }
+}

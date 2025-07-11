@@ -1,0 +1,28 @@
+{
+  "id": "articles/feconf",
+  "title": "FE 컨퍼런스 메모",
+  "description": "FE 컨퍼런스에서 들은 내용을 메모",
+  "source": "@site/docs/articles/feconf.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/feconf",
+  "permalink": "/docs/articles/feconf",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/feconf.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "feconf",
+    "title": "FE 컨퍼런스 메모",
+    "description": "FE 컨퍼런스에서 들은 내용을 메모"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "다양한 부분의 깊은 동작을 다룬 글들",
+    "permalink": "/docs/articles/articles-memo-deep-study"
+  },
+  "next": {
+    "title": "인프런 제로초 Jest 테스트 강의",
+    "permalink": "/docs/articles/jest-test-lecture"
+  }
+}

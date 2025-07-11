@@ -1,0 +1,33 @@
+{
+  "id": "translations/test-translation",
+  "title": "Test translation page",
+  "description": "Create a doc page with rich content.",
+  "source": "@site/docs/translations/index.md",
+  "sourceDirName": "translations",
+  "slug": "/translations/",
+  "permalink": "/docs/translations/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/translations/index.md",
+  "tags": [
+    {
+      "label": "Demo",
+      "permalink": "/docs/tags/demo"
+    },
+    {
+      "label": "Getting started",
+      "permalink": "/docs/tags/getting-started"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "test-translation",
+    "title": "Test translation page",
+    "tags": [
+      "Demo",
+      "Getting started"
+    ],
+    "description": "Create a doc page with rich content."
+  },
+  "sidebar": "translationSidebar"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "articles/tech",
+  "title": "잡다한 기술 아티클",
+  "description": "잡다한 기술 글들을 저장",
+  "source": "@site/docs/articles/tech.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-tech",
+  "permalink": "/docs/articles/articles-memo-tech",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/tech.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-tech",
+    "title": "잡다한 기술 아티클",
+    "description": "잡다한 기술 글들을 저장"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "다른 사람들의 회고",
+    "permalink": "/docs/articles/articles-memo-recollections"
+  },
+  "next": {
+    "title": "Typescript에 관한 글",
+    "permalink": "/docs/articles/articles-memo-typescript"
+  }
+}

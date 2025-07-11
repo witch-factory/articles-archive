@@ -1,0 +1,24 @@
+{
+  "id": "TIL/tailwind docs",
+  "title": "Tailwind CSS 문서 읽고 정리 내용",
+  "description": "Tailwind CSS v4 문서 읽고 정리한 내용",
+  "source": "@site/docs/TIL/tailwind.md",
+  "sourceDirName": "TIL",
+  "slug": "/TIL/tailwind docs",
+  "permalink": "/docs/TIL/tailwind docs",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/TIL/tailwind.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "tailwind docs",
+    "title": "Tailwind CSS 문서 읽고 정리 내용",
+    "description": "Tailwind CSS v4 문서 읽고 정리한 내용"
+  },
+  "sidebar": "TILSidebar",
+  "previous": {
+    "title": "Next.js 문서를 읽자",
+    "permalink": "/docs/TIL/next-docs"
+  }
+}

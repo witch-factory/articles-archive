@@ -1,0 +1,15 @@
+{
+  "label": "Getting started",
+  "permalink": "/tags/getting-started",
+  "allTagsPath": "/tags",
+  "count": 1,
+  "items": [
+    {
+      "id": "doc-with-tags",
+      "title": "A doc with tags",
+      "description": "Create a doc page with rich content.",
+      "permalink": "/doc-with-tags"
+    }
+  ],
+  "unlisted": false
+}

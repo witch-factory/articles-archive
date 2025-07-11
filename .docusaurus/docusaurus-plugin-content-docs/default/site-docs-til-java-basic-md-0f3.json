@@ -1,0 +1,28 @@
+{
+  "id": "TIL/java lecture basic",
+  "title": "김영한의 Java 초급편 강의를 듣고 정리한 내용",
+  "description": "김영한의 Java 초급편 강의를 듣고 정리한 내용",
+  "source": "@site/docs/TIL/java-basic.md",
+  "sourceDirName": "TIL",
+  "slug": "/TIL/java lecture basic",
+  "permalink": "/docs/TIL/java lecture basic",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/TIL/java-basic.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "java lecture basic",
+    "title": "김영한의 Java 초급편 강의를 듣고 정리한 내용",
+    "description": "김영한의 Java 초급편 강의를 듣고 정리한 내용"
+  },
+  "sidebar": "TILSidebar",
+  "previous": {
+    "title": "2025년 4월 7일 java 질문",
+    "permalink": "/docs/TIL/20250407 java"
+  },
+  "next": {
+    "title": "김영한의 Java 중급편 강의(첫번째)를 듣고 정리한 내용",
+    "permalink": "/docs/TIL/java lecture intermediate"
+  }
+}

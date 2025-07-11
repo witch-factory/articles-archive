@@ -1,0 +1,384 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": null,
+  "badge": false,
+  "noIndex": false,
+  "className": "docs-version-current",
+  "isLast": true,
+  "docsSidebars": {
+    "articleSidebar": [
+      {
+        "type": "link",
+        "label": "인덱스 페이지",
+        "href": "/docs/articles/",
+        "docId": "articles/index",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "좋은 블로그들 모음",
+        "href": "/docs/articles/articles-memo-blog",
+        "docId": "articles/blog",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "볼 만한 책들 모음",
+        "href": "/docs/articles/articles-memo-book",
+        "docId": "articles/books",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "CSS에 관한 글",
+        "href": "/docs/articles/articles-memo-css",
+        "docId": "articles/css",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "엔진의 내부 동작을 탐구하기 위한 글들",
+        "href": "/docs/articles/articles-memo-deep-engine",
+        "docId": "articles/deep-engine",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "다양한 부분의 깊은 동작을 다룬 글들",
+        "href": "/docs/articles/articles-memo-deep-study",
+        "docId": "articles/deep",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "FE 컨퍼런스 메모",
+        "href": "/docs/articles/feconf",
+        "docId": "articles/feconf",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "인프런 제로초 Jest 테스트 강의",
+        "href": "/docs/articles/jest-test-lecture",
+        "docId": "articles/inflearn-test",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Javascript에 관한 글",
+        "href": "/docs/articles/articles-memo-javascript",
+        "docId": "articles/javascript",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "라이브러리에 관한 문서와 글",
+        "href": "/docs/articles/articles-memo-library",
+        "docId": "articles/library",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "프로그래밍과 수학에 관한 글",
+        "href": "/docs/articles/articles-memo-math",
+        "docId": "articles/math",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Next.js에 관한 글",
+        "href": "/docs/articles/articles-memo-nextjs",
+        "docId": "articles/nextjs",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "React에 관한 글",
+        "href": "/docs/articles/articles-memo-react",
+        "docId": "articles/react",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "다른 사람들의 회고",
+        "href": "/docs/articles/articles-memo-recollections",
+        "docId": "articles/recollections",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "잡다한 기술 아티클",
+        "href": "/docs/articles/articles-memo-tech",
+        "docId": "articles/tech",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Typescript에 관한 글",
+        "href": "/docs/articles/articles-memo-typescript",
+        "docId": "articles/typescript",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "웹의 기초에 관한 글들",
+        "href": "/docs/articles/articles-memo-web-fundamentals",
+        "docId": "articles/web-fundamentals",
+        "unlisted": false
+      }
+    ],
+    "TILSidebar": [
+      {
+        "type": "link",
+        "label": "React 공식 문서 요약",
+        "href": "/docs/TIL/react-docs-brief",
+        "docId": "TIL/react-docs",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "2024년 9월 21일 학습",
+        "href": "/docs/TIL/TIL 20240921",
+        "docId": "TIL/TIL 20240921",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "2025년 4월 7일 java 질문",
+        "href": "/docs/TIL/20250407 java",
+        "docId": "TIL/20250407 java",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "김영한의 Java 초급편 강의를 듣고 정리한 내용",
+        "href": "/docs/TIL/java lecture basic",
+        "docId": "TIL/java lecture basic",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "김영한의 Java 중급편 강의(첫번째)를 듣고 정리한 내용",
+        "href": "/docs/TIL/java lecture intermediate",
+        "docId": "TIL/java lecture intermediate",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Nest.js 문서를 읽고 해보자",
+        "href": "/docs/TIL/nest-docs",
+        "docId": "TIL/nest-docs",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Next.js 문서를 읽자",
+        "href": "/docs/TIL/next-docs",
+        "docId": "TIL/next-docs",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Tailwind CSS 문서 읽고 정리 내용",
+        "href": "/docs/TIL/tailwind docs",
+        "docId": "TIL/tailwind docs",
+        "unlisted": false
+      }
+    ],
+    "bookSidebar": [
+      {
+        "type": "link",
+        "label": "인덱스 페이지",
+        "href": "/docs/books/",
+        "docId": "books/index",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "이펙티브 자바스크립트",
+        "href": "/docs/books/effective-javascript",
+        "docId": "books/effective-javascript",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "자바스크립트를 말하다",
+        "href": "/docs/books/speaking-javascript",
+        "docId": "books/speaking-javascript",
+        "unlisted": false
+      }
+    ]
+  },
+  "docs": {
+    "articles/blog": {
+      "id": "articles/blog",
+      "title": "좋은 블로그들 모음",
+      "description": "좋은 블로그들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/books": {
+      "id": "articles/books",
+      "title": "볼 만한 책들 모음",
+      "description": "깃헙 등에 있는 공개된 책들",
+      "sidebar": "articleSidebar"
+    },
+    "articles/css": {
+      "id": "articles/css",
+      "title": "CSS에 관한 글",
+      "description": "CSS에 관한 좋은 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/deep": {
+      "id": "articles/deep",
+      "title": "다양한 부분의 깊은 동작을 다룬 글들",
+      "description": "아무도 모르는 깊은 곳까지",
+      "sidebar": "articleSidebar"
+    },
+    "articles/deep-engine": {
+      "id": "articles/deep-engine",
+      "title": "엔진의 내부 동작을 탐구하기 위한 글들",
+      "description": "JS엔진의 깊은 곳을 탐구하는 글들",
+      "sidebar": "articleSidebar"
+    },
+    "articles/feconf": {
+      "id": "articles/feconf",
+      "title": "FE 컨퍼런스 메모",
+      "description": "FE 컨퍼런스에서 들은 내용을 메모",
+      "sidebar": "articleSidebar"
+    },
+    "articles/index": {
+      "id": "articles/index",
+      "title": "인덱스 페이지",
+      "description": "좋은 글들을 모아보자",
+      "sidebar": "articleSidebar"
+    },
+    "articles/inflearn-test": {
+      "id": "articles/inflearn-test",
+      "title": "인프런 제로초 Jest 테스트 강의",
+      "description": "인프런 제로초님의 Jest 테스트 강의를 듣고 정리한 글",
+      "sidebar": "articleSidebar"
+    },
+    "articles/javascript": {
+      "id": "articles/javascript",
+      "title": "Javascript에 관한 글",
+      "description": "Javascript에 관한 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/library": {
+      "id": "articles/library",
+      "title": "라이브러리에 관한 문서와 글",
+      "description": "라이브러리에 관한 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/math": {
+      "id": "articles/math",
+      "title": "프로그래밍과 수학에 관한 글",
+      "description": "수학과 프로그래밍 연결에 관한 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/nextjs": {
+      "id": "articles/nextjs",
+      "title": "Next.js에 관한 글",
+      "description": "Next.js에 관한 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/react": {
+      "id": "articles/react",
+      "title": "React에 관한 글",
+      "description": "React에 관한 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/recollections": {
+      "id": "articles/recollections",
+      "title": "다른 사람들의 회고",
+      "description": "회고 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/tech": {
+      "id": "articles/tech",
+      "title": "잡다한 기술 아티클",
+      "description": "잡다한 기술 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/typescript": {
+      "id": "articles/typescript",
+      "title": "Typescript에 관한 글",
+      "description": "Typescript에 관한 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "articles/web-fundamentals": {
+      "id": "articles/web-fundamentals",
+      "title": "웹의 기초에 관한 글들",
+      "description": "웹과 브라우저 근본에 관한 글들을 저장",
+      "sidebar": "articleSidebar"
+    },
+    "books/effective-javascript": {
+      "id": "books/effective-javascript",
+      "title": "이펙티브 자바스크립트",
+      "description": "데이비드 허먼, \"이펙티브 자바스크립트\"",
+      "sidebar": "bookSidebar"
+    },
+    "books/index": {
+      "id": "books/index",
+      "title": "인덱스 페이지",
+      "description": "책을 읽으면서 메모한 것들",
+      "sidebar": "bookSidebar"
+    },
+    "books/speaking-javascript": {
+      "id": "books/speaking-javascript",
+      "title": "자바스크립트를 말하다",
+      "description": "악셀 라우슈마이어의 책 \"자바스크립트를 말하다\"",
+      "sidebar": "bookSidebar"
+    },
+    "TIL/20250407 java": {
+      "id": "TIL/20250407 java",
+      "title": "2025년 4월 7일 java 질문",
+      "description": "2024년 4월 7일 java 학습한 내용 정리",
+      "sidebar": "TILSidebar"
+    },
+    "TIL/java lecture basic": {
+      "id": "TIL/java lecture basic",
+      "title": "김영한의 Java 초급편 강의를 듣고 정리한 내용",
+      "description": "김영한의 Java 초급편 강의를 듣고 정리한 내용",
+      "sidebar": "TILSidebar"
+    },
+    "TIL/java lecture intermediate": {
+      "id": "TIL/java lecture intermediate",
+      "title": "김영한의 Java 중급편 강의(첫번째)를 듣고 정리한 내용",
+      "description": "김영한의 Java 초급편 첫번째 강의를 듣고 정리한 내용",
+      "sidebar": "TILSidebar"
+    },
+    "TIL/nest-docs": {
+      "id": "TIL/nest-docs",
+      "title": "Nest.js 문서를 읽고 해보자",
+      "description": "https://docs.nestjs.com/ 를 읽고 시작해 보는 중. Prisma를 사용해 보려고 함",
+      "sidebar": "TILSidebar"
+    },
+    "TIL/next-docs": {
+      "id": "TIL/next-docs",
+      "title": "Next.js 문서를 읽자",
+      "description": "2024.10.10",
+      "sidebar": "TILSidebar"
+    },
+    "TIL/react-docs": {
+      "id": "TIL/react-docs",
+      "title": "React 공식 문서 요약",
+      "description": "React 공식 문서의 각 섹션을 짧게 요약한 메모들",
+      "sidebar": "TILSidebar"
+    },
+    "TIL/tailwind docs": {
+      "id": "TIL/tailwind docs",
+      "title": "Tailwind CSS 문서 읽고 정리 내용",
+      "description": "Tailwind CSS v4 문서 읽고 정리한 내용",
+      "sidebar": "TILSidebar"
+    },
+    "TIL/TIL 20240921": {
+      "id": "TIL/TIL 20240921",
+      "title": "2024년 9월 21일 학습",
+      "description": "2024년 9월 21일 학습한 내용 정리",
+      "sidebar": "TILSidebar"
+    }
+  }
+}

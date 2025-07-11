@@ -1,0 +1,25 @@
+{
+  "id": "articles/index",
+  "title": "인덱스 페이지",
+  "description": "좋은 글들을 모아보자",
+  "source": "@site/docs/articles/index.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/",
+  "permalink": "/docs/articles/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/index.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "인덱스 페이지",
+    "description": "좋은 글들을 모아보자"
+  },
+  "sidebar": "articleSidebar",
+  "next": {
+    "title": "좋은 블로그들 모음",
+    "permalink": "/docs/articles/articles-memo-blog"
+  }
+}

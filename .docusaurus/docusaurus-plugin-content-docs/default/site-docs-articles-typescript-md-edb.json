@@ -1,0 +1,28 @@
+{
+  "id": "articles/typescript",
+  "title": "Typescript에 관한 글",
+  "description": "Typescript에 관한 글들을 저장",
+  "source": "@site/docs/articles/typescript.md",
+  "sourceDirName": "articles",
+  "slug": "/articles/articles-memo-typescript",
+  "permalink": "/docs/articles/articles-memo-typescript",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/articles/typescript.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "slug": "articles-memo-typescript",
+    "title": "Typescript에 관한 글",
+    "description": "Typescript에 관한 글들을 저장"
+  },
+  "sidebar": "articleSidebar",
+  "previous": {
+    "title": "잡다한 기술 아티클",
+    "permalink": "/docs/articles/articles-memo-tech"
+  },
+  "next": {
+    "title": "웹의 기초에 관한 글들",
+    "permalink": "/docs/articles/articles-memo-web-fundamentals"
+  }
+}
